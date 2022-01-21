@@ -1,4 +1,5 @@
-WUMPUS_STATE = "asleep"
+class LazyWumpus:
+    WUMPUS_STATE = "asleep"
 
-def checkState():
-    pass
+    def checkState():
+        pass
