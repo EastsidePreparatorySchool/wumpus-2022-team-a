@@ -11,6 +11,7 @@ class Cave:
         
         self.adjacency_list = {}
         for i in range(0, 30):
+            # add empty array to list
             self.adjacency_list.update({i: []})
 
         for i in self.adjacency_list:
@@ -49,6 +50,7 @@ class Cave:
 
         self.connection_list = {}
         for i in range(0, 30):
+            # add empty array to list
             self.adjacency_list.update({i: []})
 
     def load_prev_game(self, game_path):
