@@ -84,13 +84,7 @@ class Cave:
         return self.connection_list.get(cavern)
     
     def add_adjacent(self, index, addIndex):
-        idx = addIndex
-        if (addIndex < 0):
-            # lower than zero, wrap around to thirty
-            idx = 29+addIndex
-        elif (addIndex > 29):
-            # higher than 29, wrap around to zero
-            idx = addIndex-29
+        idx = addIndex % 30
         
         # if it's not already in there, add it
         if idx not in self.adjacency_list[index]:
