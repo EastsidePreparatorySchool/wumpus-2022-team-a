@@ -1,0 +1,14 @@
+qHow many feet are in a mile?
+5280
+qWhat is the capitol of Washington State?
+olympia
+qWhat is the Wumpus's favorite color?
+orange
+
+
+notes:
+-questions have "q" before them
+-all question and answers must precede other lines (e.g. empty or informational lines)
+-answer is on line below question
+-answer is lowercase
+-there must be a line break after the last answer, so that it's cohesive with other answers in ending with "\n"
