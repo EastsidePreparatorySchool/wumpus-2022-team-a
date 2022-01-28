@@ -59,10 +59,61 @@ class Cave:
         # then returns the map
         return self.caverns
 
-    def load_preset_map(self, map_num):
+    def load_preset_map(self):
+        # in future, probably need preset number as a parameter
+
         # loads a preset, built-in map,
         # overrides the map stored here,
         # then returns the map
+
+        self.caverns = {0, 1, 5, 6, 24, 25, 29}
+        self.adjacency_list = {}
+        for i in self.caverns:
+            # add empty array to list
+            self.adjacency_list.update({i: []})
+
+        self.add_adjacent(0,0)
+        self.add_adjacent(0,1)
+        self.add_adjacent(0,5)
+        self.add_adjacent(0,6)
+        self.add_adjacent(0,24)
+        self.add_adjacent(0,25)
+        self.add_adjacent(0,29)
+
+        self.add_adjacent(1,0)
+        self.add_adjacent(1,6)
+
+        self.add_adjacent(5,0)
+        self.add_adjacent(5,6)
+        self.add_adjacent(5,29)
+
+        self.add_adjacent(6,0)
+        self.add_adjacent(6,1)
+        self.add_adjacent(6,5)
+
+        self.add_adjacent(24,0)
+        self.add_adjacent(24,25)
+        self.add_adjacent(24,29)
+
+        self.add_adjacent(29,0)
+        self.add_adjacent(29,24)
+
+        self.add_adjacent(25,0)
+        self.add_adjacent(25,24)
+
+        self.connection_list = {}
+        for i in self.caverns:
+            # add empty array to list
+            self.adjacency_list.update({i: []})
+
+        self.add_connection(0, 1)
+        self.add_connection(0, 24)
+        self.add_connection(0, 29)
+        self.add_connection(1, 6)
+        self.add_connection(6, 5)
+        self.add_connection(29, 24)
+        self.add_connection(24, 25)
+
         return self.caverns
 
     def gen_new_map(self, settings):
@@ -90,4 +141,8 @@ class Cave:
         if idx not in self.adjacency_list[index]:
             self.adjacency_list[index].append(idx)
 
-cave = Cave()
+    def add_connection(self, caveNum1, caveNum2):
+        self.connection_list.get(caveNum1).add(caveNum2)
+        self.connection_list.get(caveNum2).add(caveNum1)
+
+# cave = Cave()
