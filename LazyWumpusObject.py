@@ -1,6 +1,7 @@
 class LazyWumpus:
     wumpState = "ASLEEP"
     wumpPos = 0
+    localTurnNum = 0
 
     # accessor method for wumpPos for other objects
     def getWumpPos():
@@ -10,13 +11,22 @@ class LazyWumpus:
     def getWumpState():
         return wumpState
 
-    # call turn number from ?
-    def changeState():
-        global turnNum
-        if turnNum >
-        pass
+    def changeToAwake():
+        global wumpState 
+        wumpState = "AWAKE"
+        return wumpState
+
+    def changeToSleep():
+        global wumpState
+        wumpState = "ASLEEP"
+        return wumpState
 
     def moveWumpus():
+        global wumpState
+        global wumpPos
+
+        wumpState = "MOVING"
+
         if wumpPos % 2 == 1:
             possiblePos = [
                 (wumpPos + 6) % 30, 
@@ -35,6 +45,4 @@ class LazyWumpus:
                 (wumpPos - 7) % 30,
                 (wumpPos + 5) % 30
             ]
-        pass
-
-    
+        pass     
