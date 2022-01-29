@@ -1,3 +1,5 @@
+from CaveGen import *
+
 class Cave:
     # stores and manages the map of the cave
     # also loads/generates saved and new maps
@@ -9,57 +11,57 @@ class Cave:
                         [18,19,20,21,22,23],
                         [24,25,26,27,28,29]]
         
-        self.adjacency_list = {}
+        self.adjacencyList = {}
         for i in range(0, 30):
             # add empty array to list
-            self.adjacency_list.update({i: []})
+            self.adjacencyList.update({i: []})
 
-        for i in self.adjacency_list:
+        for i in self.adjacencyList:
             if (i+1) % 6 == 0:
                 # it's on the rightmost edge
-                self.add_adjacent(i, i-1)
-                self.add_adjacent(i, i-6)
-                self.add_adjacent(i, i-5)
-                self.add_adjacent(i, i+1)
-                self.add_adjacent(i, i+6)
-                self.add_adjacent(i, i+5)
+                self.addAdjacent(i, i-1)
+                self.addAdjacent(i, i-6)
+                self.addAdjacent(i, i-5)
+                self.addAdjacent(i, i+1)
+                self.addAdjacent(i, i+6)
+                self.addAdjacent(i, i+5)
             elif i % 6 == 0:
                 # it's on the leftmost edge
-                self.add_adjacent(i, i-1)
-                self.add_adjacent(i, i-6)
-                self.add_adjacent(i, i-5)
-                self.add_adjacent(i, i+1)
-                self.add_adjacent(i, i+6)
-                self.add_adjacent(i, i+5)
+                self.addAdjacent(i, i-1)
+                self.addAdjacent(i, i-6)
+                self.addAdjacent(i, i-5)
+                self.addAdjacent(i, i+1)
+                self.addAdjacent(i, i+6)
+                self.addAdjacent(i, i+5)
             elif (i+1) % 2 == 0:
                 # it's even
-                self.add_adjacent(i, i-1)
-                self.add_adjacent(i, i-6)
-                self.add_adjacent(i, i+1)
-                self.add_adjacent(i, i+7)
-                self.add_adjacent(i, i+6)
-                self.add_adjacent(i, i+5)
+                self.addAdjacent(i, i-1)
+                self.addAdjacent(i, i-6)
+                self.addAdjacent(i, i+1)
+                self.addAdjacent(i, i+7)
+                self.addAdjacent(i, i+6)
+                self.addAdjacent(i, i+5)
             else:
                 # it's odd
-                self.add_adjacent(i, i+1)
-                self.add_adjacent(i, i+6)
-                self.add_adjacent(i, i-1)
-                self.add_adjacent(i, i-7)
-                self.add_adjacent(i, i-6)
-                self.add_adjacent(i, i-5)
+                self.addAdjacent(i, i+1)
+                self.addAdjacent(i, i+6)
+                self.addAdjacent(i, i-1)
+                self.addAdjacent(i, i-7)
+                self.addAdjacent(i, i-6)
+                self.addAdjacent(i, i-5)
 
-        self.connection_list = {}
+        self.connectionList = {}
         for i in range(0, 30):
             # add empty array to list
-            self.adjacency_list.update({i: []})
+            self.connectionList.update({i: []})
 
-    def load_prev_game(self, game_path):
+    def loadPrevGame(self, gamePath):
         # loads a previous game from a path, 
         # overrides the map stored here, 
         # then returns the map
         return self.caverns
 
-    def load_preset_map(self):
+    def loadPresetMap(self):
         # in future, probably need preset number as a parameter
 
         # loads a preset, built-in map,
@@ -67,82 +69,121 @@ class Cave:
         # then returns the map
 
         self.caverns = {0, 1, 5, 6, 24, 25, 29}
-        self.adjacency_list = {}
+        self.adjacencyList = {}
         for i in self.caverns:
             # add empty array to list
-            self.adjacency_list.update({i: []})
+            self.adjacencyList.update({i: []})
 
-        self.add_adjacent(0,0)
-        self.add_adjacent(0,1)
-        self.add_adjacent(0,5)
-        self.add_adjacent(0,6)
-        self.add_adjacent(0,24)
-        self.add_adjacent(0,25)
-        self.add_adjacent(0,29)
+        self.addAdjacent(0,0)
+        self.addAdjacent(0,1)
+        self.addAdjacent(0,5)
+        self.addAdjacent(0,6)
+        self.addAdjacent(0,24)
+        self.addAdjacent(0,25)
+        self.addAdjacent(0,29)
 
-        self.add_adjacent(1,0)
-        self.add_adjacent(1,6)
+        self.addAdjacent(1,0)
+        self.addAdjacent(1,6)
 
-        self.add_adjacent(5,0)
-        self.add_adjacent(5,6)
-        self.add_adjacent(5,29)
+        self.addAdjacent(5,0)
+        self.addAdjacent(5,6)
+        self.addAdjacent(5,29)
 
-        self.add_adjacent(6,0)
-        self.add_adjacent(6,1)
-        self.add_adjacent(6,5)
+        self.addAdjacent(6,0)
+        self.addAdjacent(6,1)
+        self.addAdjacent(6,5)
 
-        self.add_adjacent(24,0)
-        self.add_adjacent(24,25)
-        self.add_adjacent(24,29)
+        self.addAdjacent(24,0)
+        self.addAdjacent(24,25)
+        self.addAdjacent(24,29)
 
-        self.add_adjacent(29,0)
-        self.add_adjacent(29,24)
+        self.addAdjacent(29,0)
+        self.addAdjacent(29,24)
 
-        self.add_adjacent(25,0)
-        self.add_adjacent(25,24)
+        self.addAdjacent(25,0)
+        self.addAdjacent(25,24)
 
-        self.connection_list = {}
+        self.connectionList = {}
         for i in self.caverns:
             # add empty array to list
-            self.adjacency_list.update({i: []})
+            self.connectionList.update({i: []})
 
-        self.add_connection(0, 1)
-        self.add_connection(0, 24)
-        self.add_connection(0, 29)
-        self.add_connection(1, 6)
-        self.add_connection(6, 5)
-        self.add_connection(29, 24)
-        self.add_connection(24, 25)
+        self.addConnection(0, 1)
+        self.addConnection(0, 24)
+        self.addConnection(0, 29)
+        self.addConnection(1, 6)
+        self.addConnection(6, 5)
+        self.addConnection(29, 24)
+        self.addConnection(24, 25)
 
-        return self.caverns
+        return self.caverns, self.adjacencyList, self.connectionList
 
-    def gen_new_map(self, settings):
+    def genNewMap(self, hazards, settings):
         # generates a new map using a randomized algorithm
         # overriding the map stored here,
         # then returns the map
-        return self.caverns
 
-    def get_current_map(self):
-        # returns the current map
-        return self.caverns, self.adjacency_list, self.connection_list
+        makeAllAccessible(self, hazards)
+        #makeMoreConnections(self, 15)
 
-    def get_adjacent(self, cavern):
+        return self.caverns, self.adjacencyList, self.connectionList
+
+    def getAdjacent(self, cavern):
         # returns the adjacent caverns of a certain cavern
-        return self.adjacency_list.get(cavern)
+        return self.adjacencyList[cavern]
 
-    def get_connected(self, cavern):
+    def isAccessible(self, cavern):
+        if cavern == 0: return True
+        current = cavern
+        visited = []
+        run = True
+        while(run):
+            if self.getConnections(current):
+                next_cav = min(self.getConnections(current))
+                
+                
+                visited.append(current)
+                current = next_cav
+                if current == 0:
+                    run = False
+                    return True
+            else:
+                run = False
+                return False
+
+    def areAdjacent(self, cav1, cav2):
+        return cav2 in self.getAdjacent(cav1)
+
+    def getConnections(self, cavern):
         # returns the caverns connected to a certain cavern
-        return self.connection_list.get(cavern)
+        return self.connectionList[cavern]
     
-    def add_adjacent(self, index, addIndex):
+    def addAdjacent(self, index, addIndex):
         idx = addIndex % 30
         
         # if it's not already in there, add it
-        if idx not in self.adjacency_list[index]:
-            self.adjacency_list[index].append(idx)
+        if idx not in self.adjacencyList[index]:
+            self.adjacencyList[index].append(idx)
 
-    def add_connection(self, caveNum1, caveNum2):
-        self.connection_list.get(caveNum1).add(caveNum2)
-        self.connection_list.get(caveNum2).add(caveNum1)
+    def addConnection(self, caveNum1, caveNum2):
+        self.connectionList[caveNum1].append(caveNum2)
+        self.connectionList[caveNum2].append(caveNum1)
 
-# cave = Cave()
+    def printSelf(self):
+        print(self.adjacencyList)
+        print(self.connectionList)
+
+        # print("1  2  3  4  5  6")
+        # print("                ")
+        # print("7  8  9  10 11 12")
+        # print("                ")
+        # print("13 14 15 16 17 18")
+        # print("                ")
+        # print("19 20 21 22 23 24")
+        # print("                ")
+        # print("25 26 27 28 29 30")
+
+cave = Cave()
+cave.genNewMap([2, 13, 22], None)
+cave.printSelf()
+print(areAllAccessible(cave)[0])
