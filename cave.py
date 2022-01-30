@@ -1,4 +1,5 @@
 from CaveGen import *
+import random
 
 class Cave:
     # stores and manages the map of the cave
@@ -124,13 +125,17 @@ class Cave:
         # then returns the map
 
         makeAllAccessible(self, hazards)
-        #makeMoreConnections(self, 15)
+        makeMoreConnections(self, 15)
 
         return self.caverns, self.adjacencyList, self.connectionList
 
     def getAdjacent(self, cavern):
         # returns the adjacent caverns of a certain cavern
         return self.adjacencyList[cavern]
+
+    def getRandomCavern(self):
+        randRow = random.choice(self.caverns)
+        return random.choice(randRow)
 
     def isAccessible(self, cavern):
         if cavern == 0: return True
@@ -152,11 +157,16 @@ class Cave:
                 return False
 
     def areAdjacent(self, cav1, cav2):
+        # returns if two caverns are adjacent or not
         return cav2 in self.getAdjacent(cav1)
 
     def getConnections(self, cavern):
         # returns the caverns connected to a certain cavern
         return self.connectionList[cavern]
+    
+    def getNumDualConnections(self, cav1, cav2):
+        # returns the number of total connections for two caverns
+        return len(self.getConnections(cav1)) + len(self.getConnections(cav2))
     
     def addAdjacent(self, index, addIndex):
         idx = addIndex % 30
@@ -186,4 +196,4 @@ class Cave:
 cave = Cave()
 cave.genNewMap([2, 13, 22], None)
 cave.printSelf()
-print(areAllAccessible(cave)[0])
+print(areAllAccessible(cave))
