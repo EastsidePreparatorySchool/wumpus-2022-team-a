@@ -4,6 +4,26 @@ qWhat is the capitol of Washington State?
 olympia
 qWhat is the Wumpus's favorite color?
 orange
+qWhat length in meters is a nautical mile?
+1852
+qquestion
+answer
+qquestion
+answer
+qquestion
+answer
+qquestion
+answer
+qquestion
+answer
+qquestion
+answer
+qquestion
+answer
+qquestion
+answer
+qquestion
+answer
 
 
 notes:
