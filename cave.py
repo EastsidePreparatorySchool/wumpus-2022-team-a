@@ -193,7 +193,7 @@ class Cave:
         # print("                ")
         # print("25 26 27 28 29 30")
 
-cave = Cave()
-cave.genNewMap([2, 13, 22], None)
-cave.printSelf()
-print(areAllAccessible(cave))
+# cave = Cave()
+# cave.genNewMap([2, 13, 22], None)
+# cave.printSelf()
+# print(areAllAccessible(cave))
