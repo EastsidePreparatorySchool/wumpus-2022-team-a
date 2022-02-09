@@ -16,7 +16,6 @@ def makeAllAccessible(cave, hazards):
 
         # get new node
         newConnection = getRandomMinFromAccessibilityFringe(fringe)
-        print(newConnection)
         current = newConnection[1]
         other = newConnection[2]
         if current not in visited: visited.append(current)
