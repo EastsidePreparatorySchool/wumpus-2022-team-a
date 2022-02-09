@@ -1,3 +1,4 @@
+from pyparsing import original_text_for
 from CaveGen import *
 import random
 
@@ -57,10 +58,53 @@ class Cave:
             self.connectionList.update({i: []})
 
     def loadPrevGame(self, gamePath):
-        # loads a previous game from a path, 
-        # overrides the map stored here, 
+        # loads a previous game from a path,
+        # overrides the map stored here,
         # then returns the map
+        
+        # test code for now
+        file = open(gamePath, "r")
+        originalStr = file.read()
+        splitStr = originalStr.split("|")[:-1]
+        conList = []
+
+        for i in range(len(splitStr)):
+            commaSplitStr = splitStr[i].split(",")
+            cons = []
+
+            for i in range(len(commaSplitStr)):
+                cons.append(int(commaSplitStr[i]))
+
+            conList.append(cons)
+
+        for i in range(len(conList)):
+            newConList = []
+
+            for item in conList[i]:
+                newConList.append(item)
+
+            self.connectionList[i] = newConList
+        file.close()
+
         return self.caverns
+
+    def saveMapFile(self, path):
+        # saves a files with the information stored in the map
+        file = open(path, "w")
+
+        for item in self.connectionList:
+            string = ""
+            connections = self.connectionList[item]
+            for i in range(len(connections)):
+                con = connections[i]
+                string = string + str(con)
+                if (i != len(connections)-1):
+                    string = string + ","
+            
+            string = string + "|"
+            file.write(string)
+
+        file.close()
 
     def loadPresetMap(self):
         # in future, probably need preset number as a parameter
@@ -176,8 +220,9 @@ class Cave:
             self.adjacencyList[index].append(idx)
 
     def addConnection(self, caveNum1, caveNum2):
-        self.connectionList[caveNum1].append(caveNum2)
-        self.connectionList[caveNum2].append(caveNum1)
+        if caveNum1 not in self.connectionList[caveNum2] and caveNum2 not in self.connectionList[caveNum1]:
+            self.connectionList[caveNum1].append(caveNum2)
+            self.connectionList[caveNum2].append(caveNum1)
 
     def printSelf(self):
         print(self.adjacencyList)
@@ -193,7 +238,14 @@ class Cave:
         # print("                ")
         # print("25 26 27 28 29 30")
 
-# cave = Cave()
+cave = Cave()
 # cave.genNewMap([2, 13, 22], None)
 # cave.printSelf()
 # print(areAllAccessible(cave))
+
+path = "MapFiles/demofile.txt"
+# cave.genNewMap([3, 26, 19], None)
+# cave.saveMapFile(path)
+# cave.printSelf()
+cave.loadPrevGame(path)
+cave.printSelf()
