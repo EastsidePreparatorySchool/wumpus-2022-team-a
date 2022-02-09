@@ -9,5 +9,5 @@ class Player:
         self.turns = 0
     
     def computeEndScore():
-        newScore = 100 - turns + coins + 5 * arrows + (50 if LazyWumpusObject.checkState() else 0)
+        newScore = 100 - turns + coins + 5 * arrows + (50 if LazyWumpusObject.getWumpState() == "DEAD" else 0)
         HighSchoresObject.addHighScore(newScore)
