@@ -35,16 +35,16 @@ class LazyWumpus:
         global moveTurn
 
         wumpState = "MOVING"
-        moveTurn = GameControl.getTurnNum()
+        #moveTurn = GameController2.getTurnNum()
 
         possiblePos = cave.getAdjacent(wumpPos)
         wumpPos = possiblePos[random.randint(0, 5)]
         
         return wumpPos    
 
-    curTurn = GameControl.getTurnNum()
-    if wumpState == "MOVING":
-        if curTurn - moveTurn >= 2:
-            wumpState = "ASLEEP"
+    # curTurn = GameControl.getTurnNum()
+    # if wumpState == "MOVING":
+    #     if curTurn - moveTurn >= 2:
+    #         wumpState = "ASLEEP"
 
     

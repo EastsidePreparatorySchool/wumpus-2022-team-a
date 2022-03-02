@@ -4,11 +4,11 @@ import random
 # from GameControl import GameControl
 from cave import Cave
 from Player import Player
-from LazyWumpusObject import LazyWumpusObject
+from LazyWumpusObject import LazyWumpus
 
 class GameLocations:
     cave = Cave()
-    wumpus = LazyWumpusObject()
+    wumpus = LazyWumpus()
     playerPos = 0
     wumpusPos = wumpus.getWumpPos()
     wumpusState = "ASLEEP"

@@ -1,4 +1,9 @@
 import pygame
+from GameLocations import GameLocations
+from cave import Cave
+from Player import Player
+from LazyWumpusObject import LazyWumpus
+
 
 from pygame.locals import *
 
@@ -12,6 +17,22 @@ def drawBackground():
 
 
 drawBackground()
+
+
+player = Player()
+
+wumpus = LazyWumpus()
+
+cave = Cave()
+
+
+
+GameLocations.spawnItems()
+
+
+
+
+
 
 # Variable to keep our game loop runngameOn = True
 gameOn = True
