@@ -21,20 +21,20 @@ class GameLocations:
     WUMPUS_AND_PIT = "WP"
 
     # Called by GameControl
-    def spawnItems():
+    def spawnItems(self):
         self.playerPos = 0
 
         hazardPos = random.sample(range(1, 31), 4)
-        hazards.add(hazardPos[0], "PIT")
-        hazards.add(hazardPos[1], "PIT")
-        hazards.add(hazardPos[2], "BAT")
-        hazards.add(hazardPos[3], "BAT")
+        self.hazards.add(hazardPos[0], "PIT")
+        self.hazards.add(hazardPos[1], "PIT")
+        self.hazards.add(hazardPos[2], "BAT")
+        self.hazards.add(hazardPos[3], "BAT")
 
     # Called by GameControl
     def movePlayer(targetPos):
-        for pos in hazards.keys():
+        for pos in GameLocations.hazards.keys():
             if pos == targetPos:
-                if hazards[pos] == "PIT":
+                if GameLocations.hazards[pos] == "PIT":
                     # Reset position to initial starting point (currently always 0)
                     playerPos = 0
 

@@ -15,7 +15,7 @@ class HighScores:
     # returns the top ten high scores as a list of strings
     # Scores are ordered by the list indexing - top score at 
     # index 0, bottom at index 9, etc.
-    def getHighScores():
+    def getHighScores(self):
         with open("HighScores.txt", "r") as file1: 
             CurrentHighScoresList = file1.read().splitlines()
             file1.close()
@@ -26,7 +26,7 @@ class HighScores:
     # if at all
     # No return
     def addHighScore(UserName, UserScore): 
-        newScore = GameControl.getHighScore()
+        # newScore = GameControl.getHighScore()
         currentScoresArr = []
         with open("HighScores.txt", "r") as file1: 
             for x in range(10):
