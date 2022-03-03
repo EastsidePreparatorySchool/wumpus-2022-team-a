@@ -3,11 +3,11 @@ class Player:
     coins = 0
     turns = 0
 
-    def __init__():
+    def __init__(self):
         self.arrows = 3
         self.coins = 0
         self.turns = 0
     
-    def computeEndScore():
-        newScore = 100 - turns + coins + 5 * arrows + (50 if LazyWumpusObject.getWumpState() == "DEAD" else 0)
-        HighSchoresObject.addHighScore(newScore)
+    def computeEndScore(wumpusState):
+        newScore = 100 - Player.turns + Player.coins + 5 * Player.arrows + (50 if wumpusState == "DEAD" else 0)
+        return newScore
