@@ -1,4 +1,5 @@
 import random
+from cave import Cave
 
 class LazyWumpus:
     wumpState = "ASLEEP"
@@ -37,7 +38,7 @@ class LazyWumpus:
         wumpState = "MOVING"
         #moveTurn = GameController2.getTurnNum()
 
-        possiblePos = cave.getAdjacent(wumpPos)
+        possiblePos = Cave.getAdjacent(wumpPos)
         wumpPos = possiblePos[random.randint(0, 5)]
         
         return wumpPos    
