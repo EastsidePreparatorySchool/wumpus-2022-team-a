@@ -1,6 +1,6 @@
 import pygame
 from PIL import Image
-#from GameLocations import GameLocations
+from GameLocations import GameLocations
 from cave import Cave
 from Player import Player
 from LazyWumpusObject import LazyWumpus
@@ -27,13 +27,15 @@ wumpus = LazyWumpus()
 
 cave = Cave()
 
-#GameLocations.spawnItems()
+location = GameLocations()
+
+location.spawnItems(wumpus, cave, player)
 
 
 
 
 
-
+turnNum = 0
 # Variable to keep our game loop runngameOn = True
 gameOn = True
 # Our game loop
@@ -61,6 +63,7 @@ while gameOn:
         if event.type == pygame.MOUSEBUTTONDOWN:
             print("clickkk")
 
-
-
     pygame.display.update()
+
+
+    turnNum += 1

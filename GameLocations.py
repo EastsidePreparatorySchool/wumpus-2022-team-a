@@ -1,37 +1,40 @@
-from numpy import true_divide
 import random
 
-# from GameControl import GameControl
-from cave import Cave
-from Player import Player
-from LazyWumpusObject import LazyWumpus
+# from GameController2 import GameController2
+# from cave import Cave
+# from Player import Player
+# from LazyWumpusObject import LazyWumpus
 
 class GameLocations:
-    cave = Cave()
-    wumpus = LazyWumpus()
-    playerPos = 0
-    wumpusPos = wumpus.getWumpPos()
-    wumpusState = "ASLEEP"
     hazards = {}
 
-    BAT = "B"
-    PIT = "P"
-    WUMPUS = "W"
-    WUMPUS_AND_BAT = "WB"
-    WUMPUS_AND_PIT = "WP"
+    def __init__(self):
+        self.hazards = {}
 
     # Called by GameControl
-    def spawnItems(self):
-        self.playerPos = 0
+    def getHazards():
+        return GameLocations.hazards
+
+    def spawnItems(self, wumpus, cave, player):
+        hazards = GameLocations.getHazards()
 
         hazardPos = random.sample(range(1, 31), 4)
-        self.hazards.add(hazardPos[0], "PIT")
-        self.hazards.add(hazardPos[1], "PIT")
-        self.hazards.add(hazardPos[2], "BAT")
-        self.hazards.add(hazardPos[3], "BAT")
+        hazards.get(hazardPos[0], "PIT")
+        hazards.get(hazardPos[1], "PIT")
+        hazards.get(hazardPos[2], "BAT")
+        hazards.get(hazardPos[3], "BAT")
 
     # Called by GameControl
-    def movePlayer(targetPos):
+    def movePlayer(self, targetPos, wumpus, cave, player):
+        BAT = "B"
+        PIT = "P"
+        WUMPUS = "W"
+        WUMPUS_AND_BAT = "WB"
+        WUMPUS_AND_PIT = "WP"
+
+        wumpusPos = wumpus.getWumpPos()
+        hazards = GameLocations.getHazards()
+
         for pos in GameLocations.hazards.keys():
             if pos == targetPos:
                 if GameLocations.hazards[pos] == "PIT":
@@ -83,7 +86,9 @@ class GameLocations:
             # "You encountered the Wumpus. Fight for your life."
 
     # Called by GameControl
-    def shootArrow(targetPos):
+    def shootArrow(self, targetPos, wumpus, cave, player):
+        wumpusPos = wumpus.getWumpPos()
+
         if targetPos == wumpusPos:
             # End game in this case
             return True
@@ -94,20 +99,16 @@ class GameLocations:
         return False
 
     # Called by GameControl
-    def getWarnings():
-        possibleCaves = Cave.get_connected()
+    def getWarnings(self, wumpus, cave, player):
+        hazards = GameLocations.getHazards()
+
+        possibleCaves = cave.get_connected()
         possibleHazards = []
 
         for cave in possibleCaves:
             if cave in hazards.keys():
-                possibleHazard.append(hazards.get(cave))
+                possibleHazards.append(hazards.get(cave))
         
         if len(possibleHazards) > 0:
             return possibleHazards
         return None
-
-    def getHazards():
-        return hazards
-    
-    def getPlayer():
-        return playerPos
