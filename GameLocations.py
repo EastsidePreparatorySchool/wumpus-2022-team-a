@@ -25,7 +25,7 @@ class GameLocations:
         hazards.get(hazardPos[3], "BAT")
 
     # Called by GameControl
-    def movePlayer(self, targetPos, wumpus, cave, player):
+    def checkHazards(self, currentPos, wumpus, cave, player):
         BAT = "B"
         PIT = "P"
         WUMPUS = "W"
@@ -36,12 +36,12 @@ class GameLocations:
         hazards = GameLocations.getHazards()
 
         for pos in GameLocations.hazards.keys():
-            if pos == targetPos:
+            if pos == currentPos:
                 if GameLocations.hazards[pos] == "PIT":
                     # Reset position to initial starting point (currently always 0)
                     playerPos = 0
 
-                    if targetPos == wumpusPos:
+                    if currentPos == wumpusPos:
                         return WUMPUS_AND_PIT
                         # "You encountered the Wumpus, but fell into a pit."
                     return PIT
@@ -57,7 +57,7 @@ class GameLocations:
                     p2 = 0
                     pFound = False
 
-                    for i in range(1, 31):
+                    for i in range(1, 30):
                         if hazards[i] == "BAT" and not bFound:
                             b1 = i
                             bFound = True
@@ -69,19 +69,19 @@ class GameLocations:
                         elif hazards[i] == "PIT":
                             p2 = i
                     
-                    possiblePos = range(1, 31)
+                    possiblePos = range(1, 30)
                     possiblePos.remove(b2, p1, p2)
                     newPos = random.sample(possiblePos, 1)
                     hazards.pop(b1)
                     hazards.add(newPos, "BAT")
 
-                    if targetPos == wumpusPos:
+                    if currentPos == wumpusPos:
                         return WUMPUS_AND_BAT
                         # "You encountered the Wumpus, but were saved by bats."
                     return BAT
                     # "You were moved by a bat."
         
-        if targetPos == wumpusPos:
+        if currentPos == wumpusPos:
             return WUMPUS
             # "You encountered the Wumpus. Fight for your life."
 
