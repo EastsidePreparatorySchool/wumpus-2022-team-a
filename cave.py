@@ -168,7 +168,7 @@ class Cave:
         # overriding the map stored here,
         # then returns the map
 
-        makeAllAccessible(self, hazards)
+        makeAllAccessible(self, hazards.keys())
         makeMoreConnections(self, 15)
 
         return self.caverns, self.adjacencyList, self.connectionList
@@ -248,4 +248,4 @@ path = "MapFiles/demofile.txt"
 # cave.saveMapFile(path)
 # cave.printSelf()
 cave.loadPrevGame(path)
-cave.printSelf()
+# cave.printSelf()
