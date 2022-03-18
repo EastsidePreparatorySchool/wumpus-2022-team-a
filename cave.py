@@ -1,12 +1,14 @@
 
 from CaveGen import *
 import random
+import pprint
 
 class Cave:
     # stores and manages the map of the cave
     # also loads/generates saved and new maps
 
     def __init__(self):
+        # might not need this, try to remove if possible
         self.caverns = [[0, 1, 2, 3, 4, 5],
                         [6, 7, 8, 9, 10,11],
                         [12,13,14,15,16,17],
@@ -163,7 +165,7 @@ class Cave:
 
         return self.caverns, self.adjacencyList, self.connectionList
 
-    def genNewMap(self, hazards, settings):
+    def genNewMap(self, hazards):
         # generates a new map using a randomized algorithm
         # overriding the map stored here,
         # then returns the map
@@ -225,8 +227,8 @@ class Cave:
             self.connectionList[caveNum2].append(caveNum1)
 
     def printSelf(self):
-        print(self.adjacencyList)
-        print(self.connectionList)
+        pprint.pprint(self.adjacencyList)
+        pprint.pprint(self.connectionList)
 
         # print("1  2  3  4  5  6")
         # print("                ")
@@ -244,7 +246,7 @@ cave = Cave()
 # print(areAllAccessible(cave))
 
 path = "MapFiles/demofile.txt"
-# cave.genNewMap([3, 26, 19], None)
+# cave.genNewMap([3, 26, 19])
 # cave.saveMapFile(path)
 # cave.printSelf()
 cave.loadPrevGame(path)

@@ -12,11 +12,11 @@ class GameLocations:
         self.hazards = {}
 
     # Called by GameControl
-    def getHazards():
-        return GameLocations.hazards
+    def getHazards(self):
+        return self.hazards
 
     def spawnItems(self, wumpus, cave, player):
-        hazards = GameLocations.getHazards()
+        hazards = self.getHazards()
 
         hazardPos = random.sample(range(1, 31), 4)
         hazards.get(hazardPos[0], "PIT")
@@ -33,11 +33,11 @@ class GameLocations:
         WUMPUS_AND_PIT = "WP"
 
         wumpusPos = wumpus.getWumpPos()
-        hazards = GameLocations.getHazards()
+        hazards = self.getHazards()
 
-        for pos in GameLocations.hazards.keys():
+        for pos in self.hazards.keys():
             if pos == currentPos:
-                if GameLocations.hazards[pos] == "PIT":
+                if self.hazards[pos] == "PIT":
                     # Reset position to initial starting point (currently always 0)
                     playerPos = 0
 
@@ -100,7 +100,7 @@ class GameLocations:
 
     # Called by GameControl
     def getWarnings(self, wumpus, cave, player):
-        hazards = GameLocations.getHazards()
+        hazards = self.getHazards()
 
         possibleCaves = cave.get_connected()
         possibleHazards = []

@@ -76,6 +76,7 @@ print("Welcome to Hunt the Wumpus!")
 input("Press enter to begin! ")
 location.spawnItems(wumpus, cave, player)
 cave.genNewMap(location.getHazards())
+# cave.printSelf()
 
 turnNum = 0
 # Variable to keep our game loop run
@@ -83,6 +84,8 @@ gameOn = True
 # Our game loop
 while gameOn:
     # one turn per loop
-    location.checkHazards(0, wumpus, cave, player)
+    print(location.checkHazards(player.pos, wumpus, cave, player))
+    print("Player position:", player.pos)
+    print(cave.getConnections(player.pos))
     turnNum += 1
     gameOn = False # break out of loop
