@@ -18,7 +18,7 @@ class GameLocations:
     def spawnItems(self, wumpus, cave, player):
         hazards = self.getHazards()
 
-        hazardPos = random.sample(range(1, 31), 4)
+        hazardPos = random.sample(range(1, 30), 4)
         hazards.get(hazardPos[0], "PIT")
         hazards.get(hazardPos[1], "PIT")
         hazards.get(hazardPos[2], "BAT")
@@ -47,7 +47,7 @@ class GameLocations:
                     return PIT
                     # "You fell into a pit."
                 
-                elif hazards[pos] == "BAT":
+                elif hazards[pos] == "BAT": 
                     playerPos == random.randint(1, 30)
 
                     b1 = 0
@@ -102,13 +102,14 @@ class GameLocations:
     def getWarnings(self, wumpus, cave, player):
         hazards = self.getHazards()
 
-        possibleCaves = cave.get_connected()
+        possibleCaves = cave.getConnections()
         possibleHazards = []
 
         for cave in possibleCaves:
             if cave in hazards.keys():
                 possibleHazards.append(hazards.get(cave))
+
+        if wumpus.getWumpPos in possibleCaves:
+            possibleHazards.append("WUMPUS")
         
-        if len(possibleHazards) > 0:
-            return possibleHazards
-        return None
+        return possibleHazards
