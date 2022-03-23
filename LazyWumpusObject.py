@@ -8,7 +8,7 @@ class LazyWumpus:
 
     def __init__(self): 
         self.wumpState = "ASLEEP"
-        self.wumpPos = 0
+        self.wumpPos = 1
         self.localTurnNum = 0
 
     # accessor method for wumpPos for other objects

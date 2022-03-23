@@ -78,6 +78,23 @@ location.spawnItems(wumpus, cave, player)
 cave.genNewMap(location.getHazards())
 # cave.printSelf()
 
+def PlayerMove():
+
+    based = False
+
+    while not based:
+        move = input("Which way to go next????")
+        if int(move) in cave.getConnections(player.pos):
+            player.pos = int(move)
+            print("based")
+            based = True
+
+def ShootArrow():
+
+    direction = input("which room to shoot arrow at????")
+    print(GameLocations.shootArrow(int(direction), wumpus, cave, player))
+
+
 turnNum = 0
 # Variable to keep our game loop run
 gameOn = True
@@ -87,5 +104,19 @@ while gameOn:
     print(location.checkHazards(player.pos, wumpus, cave, player))
     print("Player position:", player.pos)
     print(cave.getConnections(player.pos))
+
+    actionChoice = input("shoot or move?")
+    if actionChoice == "shoot":
+        ShootArrow()
+    else:   
+        PlayerMove()
+
     turnNum += 1
-    gameOn = False # break out of loop
+ 
+
+
+
+
+
+    
+
