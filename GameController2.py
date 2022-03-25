@@ -1,4 +1,5 @@
 import pygame
+import random
 from PIL import Image
 from GameLocations import GameLocations
 from cave import Cave
@@ -74,36 +75,58 @@ print("game initialized")
 
 print("Welcome to Hunt the Wumpus!")
 input("Press enter to begin! ")
+playerName = input("What's your name? ")
 location.spawnItems(wumpus, cave, player)
 cave.genNewMap(location.getHazards())
+# for diagnostic purposes
+print(location.getHazards())
 # cave.printSelf()
 
 def PlayerMove():
 
-    based = False
+    # based = False
 
-    while not based:
-        move = input("Which way to go next????")
-        if int(move) in cave.getConnections(player.pos):
-            player.pos = int(move)
-            print("based")
-            based = True
-    #move = input("Where do you want to move?")
-    #while move not in cave.getConnections(player.pos):
-    #    move = input("Not a valid response. Enter the number room you want to enter.")
-    #player.pos = int(move)
-    #print("based")
+    # while not based:
+    #     move = input("Which way to go next????")
+    #     if int(move) in cave.getConnections(player.pos):
+    #         player.pos = int(move)
+    #         print("based")
+    #         based = True
+    move = input("Where do you want to move?")
+    while int(move) not in cave.getConnections(player.pos):
+       move = input("Not a valid response. Enter the number room you want to enter.")
+    player.pos = int(move)
+    # you get a coin when you move
+    player.coins += 1
+    print("you moved")
 
 def ShootArrow():
     global gameOn
     direction = input("which room to shoot arrow at????")
+    while int(direction) not in cave.getConnections(player.pos):
+       direction = input("Not a valid response. Enter the number room you want to shoot into.")
     if location.shootArrow(int(direction), wumpus, cave, player):
         print("you killed the wumpus!")
         wumpus.changeToDead()
         gameOn = False
     else:
         print("missed arrow")
+        wumpus.changeToAwake()
 
+def FightWumpus():
+    global gameOn
+    print("the wumpus is here. Fight for your life")
+    triviaResult = trivia.challenge(3, 5, player)
+    if triviaResult == "W":
+        print("you escape the wumpus and move to a random connected room")
+        player.pos = random.choice(cave.getConnections(player.pos))
+        # need to wake wumpus up
+    elif triviaResult == "L":
+        print("the wumpus eats you")
+        gameOn = False
+    else:
+        # death by bankruptcy
+        gameOn = False
 
 turnNum = 0
 # Variable to keep our game loop run
@@ -111,10 +134,18 @@ gameOn = True
 # Our game loop
 while gameOn:
     # one turn per loop
-    print(location.checkHazards(player.pos, wumpus, cave, player))
+    hazards = location.checkHazards(player.pos, wumpus, cave, player)
+    print("\nHazards:", hazards)
+    if hazards == "W":
+        # fight the wumpus
+        FightWumpus()
+        if not gameOn:
+            # don't do the rest of the turn if you're dead
+            break
+
     print("Player position:", player.pos)
-    print(cave.getConnections(player.pos))
-    print(location.getWarnings(wumpus, cave, player))
+    print("Cave connections:", cave.getConnections(player.pos))
+    print("Warnings:", location.getWarnings(wumpus, cave, player))
 
     actionChoice = input("shoot or move?")
     if actionChoice == "shoot":
@@ -124,10 +155,5 @@ while gameOn:
 
     turnNum += 1
  
-print(player.computeEndScore(wumpus.getWumpState(), turnNum))
-
-
-
-
-    
-
+highScores.addHighScore(playerName, player.computeEndScore(wumpus.getWumpState(), turnNum))
+print(highScores.getHighScores())

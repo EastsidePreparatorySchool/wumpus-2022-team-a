@@ -31,10 +31,11 @@ class Trivia:
             else:
                 # will need to tell Control about loss by returning a different value
                 print("lose game due to trying to pay coins when broke")
+                return "Bankrupt"
             attempts += 1
             if (correct >= int(needCorrect)):
-                return True
-        return False
+                return "W"
+        return "L"
 
     def askQuestion(self):
         # used only by Trivia Object

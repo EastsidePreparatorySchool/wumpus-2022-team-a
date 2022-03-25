@@ -18,11 +18,18 @@ class GameLocations:
     def spawnItems(self, wumpus, cave, player):
         hazards = self.getHazards()
 
-        hazardPos = random.sample(range(1, 30), 4)
-        hazards.get(hazardPos[0], "PIT")
-        hazards.get(hazardPos[1], "PIT")
-        hazards.get(hazardPos[2], "BAT")
-        hazards.get(hazardPos[3], "BAT")
+        #hazardPos = random.sample(range(1, 30), 4)
+        #hazards.get(hazardPos[0], "PIT")
+        #hazards.get(hazardPos[1], "PIT")
+        #hazards.get(hazardPos[2], "BAT")
+        #hazards.get(hazardPos[3], "BAT")
+        # dictionary.get does not seem to change the dictionary.
+        # also the caves are numbered 0-29, not 1-30
+        hazardPos = random.sample(range(30), 4)
+        hazards[hazardPos[0]] = "PIT"
+        hazards[hazardPos[1]] = "PIT"
+        hazards[hazardPos[2]] = "BAT"
+        hazards[hazardPos[3]] = "BAT"
 
     # Called by GameControl
     def checkHazards(self, currentPos, wumpus, cave, player):
@@ -48,7 +55,7 @@ class GameLocations:
                     # "You fell into a pit."
                 
                 elif hazards[pos] == "BAT": 
-                    playerPos == random.randint(1, 30)
+                    playerPos = random.randint(1, 30)
 
                     b1 = 0
                     b2 = 0

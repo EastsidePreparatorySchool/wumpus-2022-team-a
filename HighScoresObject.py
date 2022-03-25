@@ -25,13 +25,14 @@ class HighScores:
     # top ten scores, and adds it in the appropriate location in the list
     # if at all
     # No return
-    def addHighScore(UserName, UserScore): 
+    def addHighScore(self, UserName, UserScore): 
         # newScore = GameControl.getHighScore()
         currentScoresArr = []
         with open("HighScores.txt", "r") as file1: 
             for x in range(10):
                 currentLine = file1.readline()
                 splitString = currentLine.split(' - ')
+                # the next line is giving a bug
                 if(len(splitString) == 2) : currentScoresArr.append(splitString[0], splitString[1])
             file1.close()
         for x in range(len(currentScoresArr)): 
