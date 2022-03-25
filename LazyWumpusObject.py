@@ -20,14 +20,16 @@ class LazyWumpus:
         return self.wumpState
 
     def changeToAwake(self):
-        global wumpState 
-        wumpState = "AWAKE"
-        return wumpState
+        self.wumpState = "AWAKE"
+        #return wumpState
+    
+    def changeToDead(self):
+        self.wumpState = "DEAD"
+        #return wumpState
 
     def changeToSleep(self):
-        global wumpState
-        wumpState = "ASLEEP"
-        return wumpState
+        self.wumpState = "ASLEEP"
+        #return wumpState
 
     def arrowMiss(self):
         return random.randint(1, 2)
@@ -36,17 +38,16 @@ class LazyWumpus:
         return random.randint(1, 3)
 
     def moveWumpus(self):
-        global wumpState
-        global wumpPos
-        global moveTurn
+        #global wumpPos
+        #global moveTurn
 
-        wumpState = "MOVING"
+        self.wumpState = "MOVING"
         #moveTurn = GameController2.getTurnNum()
 
-        possiblePos = Cave.getAdjacent(wumpPos)
-        wumpPos = possiblePos[random.randint(0, 5)]
+        possiblePos = Cave.getAdjacent(self.getWumpPos())
+        self.wumpPos = possiblePos[random.randint(0, 5)]
         
-        return wumpPos    
+        #return self.wumpPos    
 
     # curTurn = GameControl.getTurnNum()
     # if wumpState == "MOVING":

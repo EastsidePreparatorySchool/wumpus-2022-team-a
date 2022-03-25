@@ -93,6 +93,8 @@ class GameLocations:
             # End game in this case
             return True
         
+        player.useArrow()
+
         wumpus.arrowMiss()
         wumpus.changeToAwake()
         wumpus.moveWumpus()
@@ -102,7 +104,7 @@ class GameLocations:
     def getWarnings(self, wumpus, cave, player):
         hazards = self.getHazards()
 
-        possibleCaves = cave.getConnections()
+        possibleCaves = cave.getConnections(player.pos)
         possibleHazards = []
 
         for cave in possibleCaves:

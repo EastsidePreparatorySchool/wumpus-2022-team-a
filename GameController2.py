@@ -88,11 +88,21 @@ def PlayerMove():
             player.pos = int(move)
             print("based")
             based = True
+    #move = input("Where do you want to move?")
+    #while move not in cave.getConnections(player.pos):
+    #    move = input("Not a valid response. Enter the number room you want to enter.")
+    #player.pos = int(move)
+    #print("based")
 
 def ShootArrow():
-
+    global gameOn
     direction = input("which room to shoot arrow at????")
-    print(GameLocations.shootArrow(int(direction), wumpus, cave, player))
+    if location.shootArrow(int(direction), wumpus, cave, player):
+        print("you killed the wumpus!")
+        wumpus.changeToDead()
+        gameOn = False
+    else:
+        print("missed arrow")
 
 
 turnNum = 0
@@ -104,6 +114,7 @@ while gameOn:
     print(location.checkHazards(player.pos, wumpus, cave, player))
     print("Player position:", player.pos)
     print(cave.getConnections(player.pos))
+    print(location.getWarnings(wumpus, cave, player))
 
     actionChoice = input("shoot or move?")
     if actionChoice == "shoot":
@@ -113,7 +124,7 @@ while gameOn:
 
     turnNum += 1
  
-
+print(player.computeEndScore(wumpus.getWumpState(), turnNum))
 
 
 
