@@ -112,21 +112,29 @@ def ShootArrow():
     else:
         print("missed arrow")
         wumpus.changeToAwake()
+    if player.arrows == 0:
+        print("wumpus senses that you're out of arrows and eats you")
+        gameOn = False
 
 def FightWumpus():
     global gameOn
     print("the wumpus is here. Fight for your life")
-    triviaResult = trivia.challenge(3, 5, player)
-    if triviaResult == "W":
+    if trivia.challenge(3, 5, player):
         print("you escape the wumpus and move to a random connected room")
         player.pos = random.choice(cave.getConnections(player.pos))
         # need to wake wumpus up
-    elif triviaResult == "L":
+    else:
         print("the wumpus eats you")
         gameOn = False
+
+def BuyArrow():
+    print("you attempt to purchase an arrow")
+    if trivia.challenge(2, 3, player):
+        player.arrows += 1
+        print("gained one arrow")
     else:
-        # death by bankruptcy
-        gameOn = False
+        print("failed to get an arrow")
+
 
 turnNum = 0
 # Variable to keep our game loop run
@@ -147,13 +155,18 @@ while gameOn:
     print("Cave connections:", cave.getConnections(player.pos))
     print("Warnings:", location.getWarnings(wumpus, cave, player))
 
-    actionChoice = input("shoot or move?")
+    actionChoice = input("shoot or move or buy arrow?")
     if actionChoice == "shoot":
         ShootArrow()
-    else:   
+    elif actionChoice == "move":   
         PlayerMove()
+    elif actionChoice == "buy arrow":
+        BuyArrow()
 
     turnNum += 1
- 
-highScores.addHighScore(playerName, player.computeEndScore(wumpus.getWumpState(), turnNum))
-print(highScores.getHighScores())
+
+try:
+    highScores.addHighScore(playerName, player.computeEndScore(wumpus.getWumpState(), turnNum))
+    print(highScores.getHighScores())
+except:
+    print("gameOn is false. error involving high score (line 36, in addHighScore)")

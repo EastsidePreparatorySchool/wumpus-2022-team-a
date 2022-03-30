@@ -37,14 +37,14 @@ class LazyWumpus:
     def trivia(self):
         return random.randint(1, 3)
 
-    def moveWumpus(self):
+    def moveWumpus(self, cave):
         #global wumpPos
         #global moveTurn
 
         self.wumpState = "MOVING"
         #moveTurn = GameController2.getTurnNum()
 
-        possiblePos = Cave.getAdjacent(self.getWumpPos())
+        possiblePos = cave.getAdjacent(self.getWumpPos())
         self.wumpPos = possiblePos[random.randint(0, 5)]
         
         #return self.wumpPos    

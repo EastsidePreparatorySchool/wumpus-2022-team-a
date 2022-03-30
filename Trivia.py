@@ -24,18 +24,17 @@ class Trivia:
         correct = 0
         attempts = 0
         for i in range(int(maxAttempts)):
-            if (self.askQuestion()):
-                correct += 1
-            if player.coins > 0: # this if/else should maybe be before asking the question
+            if player.coins > 0:
                 player.coins -= 1
             else:
-                # will need to tell Control about loss by returning a different value
-                print("lose game due to trying to pay coins when broke")
-                return "Bankrupt"
+                print("no coins, can't answer trivia")
+                return False
+            if (self.askQuestion()):
+                correct += 1
             attempts += 1
             if (correct >= int(needCorrect)):
-                return "W"
-        return "L"
+                return True
+        return False
 
     def askQuestion(self):
         # used only by Trivia Object
