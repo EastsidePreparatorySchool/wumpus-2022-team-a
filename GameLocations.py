@@ -17,15 +17,10 @@ class GameLocations:
 
     def spawnItems(self, wumpus, cave, player):
         hazards = self.getHazards()
+        for i in range(30):
+            hazards[i] = ""
 
-        #hazardPos = random.sample(range(1, 30), 4)
-        #hazards.get(hazardPos[0], "PIT")
-        #hazards.get(hazardPos[1], "PIT")
-        #hazards.get(hazardPos[2], "BAT")
-        #hazards.get(hazardPos[3], "BAT")
-        # dictionary.get does not seem to change the dictionary.
-        # also the caves are numbered 0-29, not 1-30
-        hazardPos = random.sample(range(30), 4)
+        hazardPos = random.sample(range(1, 30), 4)
         hazards[hazardPos[0]] = "PIT"
         hazards[hazardPos[1]] = "PIT"
         hazards[hazardPos[2]] = "BAT"
@@ -46,7 +41,7 @@ class GameLocations:
             if pos == currentPos:
                 if self.hazards[pos] == "PIT":
                     # Reset position to initial starting point (currently always 0)
-                    playerPos = 0
+                    player.pos = 0
 
                     if currentPos == wumpusPos:
                         return WUMPUS_AND_PIT
@@ -55,20 +50,20 @@ class GameLocations:
                     # "You fell into a pit."
                 
                 elif hazards[pos] == "BAT": 
-                    playerPos = random.randint(1, 30)
+                    #player.pos = random.randint(1, 30)  moving this line to control
 
-                    b1 = 0
+                    #b1 = 0
                     b2 = 0
-                    bFound = False
+                    #bFound = False
                     p1 = 0
                     p2 = 0
                     pFound = False
 
                     for i in range(1, 30):
-                        if hazards[i] == "BAT" and not bFound:
-                            b1 = i
-                            bFound = True
-                        elif hazards[i] == "BAT":
+                        #if hazards[i] == "BAT" and not bFound:
+                        #    b1 = i
+                        #    bFound = True
+                        if hazards[i] == "BAT":
                             b2 = i
                         elif hazards[i] == "PIT" and not pFound:
                             p1 = i
@@ -76,11 +71,18 @@ class GameLocations:
                         elif hazards[i] == "PIT":
                             p2 = i
                     
-                    possiblePos = range(1, 30)
-                    possiblePos.remove(b2, p1, p2)
-                    newPos = random.sample(possiblePos, 1)
-                    hazards.pop(b1)
-                    hazards.add(newPos, "BAT")
+                    possiblePos = list(range(30))
+                    possiblePos.remove(b2)
+                    possiblePos.remove(p1)
+                    possiblePos.remove(p2)
+                    newPos = random.sample(possiblePos, 1)[0]
+                    #hazards.pop(b1)
+                    #hazards.pop(currentPos)  this causes an error in line 67 because it makes
+                    #                         hazards[i] stop existing for one value
+                    hazards[currentPos] = ""
+                    hazards[newPos] = "BAT"
+
+                    print(self.getHazards())
 
                     if currentPos == wumpusPos:
                         return WUMPUS_AND_BAT
@@ -115,10 +117,11 @@ class GameLocations:
         possibleHazards = []
 
         for cave in possibleCaves:
-            if cave in hazards.keys():
-                possibleHazards.append(hazards.get(cave))
+            #if cave in hazards.keys():
+                #possibleHazards.append(hazards.get(cave))
+            possibleHazards.append(hazards.get(cave))
 
-        if wumpus.getWumpPos in possibleCaves:
+        if wumpus.getWumpPos() in possibleCaves:
             possibleHazards.append("WUMPUS")
         
         return possibleHazards
