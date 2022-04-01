@@ -27,28 +27,29 @@ class HighScores:
     # No return
     def addHighScore(self, UserName, UserScore): 
         # newScore = GameControl.getHighScore()
-        currentScoresArr = []
-        with open("HighScores.txt", "r") as file1: 
+        currentScoresArr = [] # currentScoresArr = {}
+        with open("HighScores.txt", "r") as file1:
+            currentLine = file1.readline()
+            splitString = currentLine.split(' - ')
+            print(splitString)
             for x in range(10):
-                currentLine = file1.readline()
-                splitString = currentLine.split(' - ')
-                # the next line is giving a bug
-                if(len(splitString) == 2) : currentScoresArr.append(splitString[0], splitString[1])
+                # currentScoresArr[splitString[0]] = splitString[1]
+                currentScoresArr.append(splitString[2 * x]) 
+                currentScoresArr.append(splitString[2 * x + 1])
+                # print(splitString[0], splitString[1])
+            print(currentScoresArr)
             file1.close()
-        for x in range(len(currentScoresArr)): 
-            if(UserScore < currentScoresArr[x][1]): 
+        for x in range(len(currentScoresArr)//2): 
+            if(UserScore < int(currentScoresArr[x * 2 + 1])): 
                 currentScoresArr.insert(x, (UserName, UserScore))
         with open("HighScores.txt", "w") as file1: 
-            if(len(currentScoresArr) >= 11): 
+            if(len(currentScoresArr) >= 21): 
                 for x in range(10):
-                    print(currentScoresArr[x][0] + " - " + currentScoresArr[x][1], file=file1)
+                    print(currentScoresArr[2 * x] + " - " + currentScoresArr[2 * x + 1], file=file1)
             else: 
-                for x in range(len(currentScoresArr)): 
-                    print(currentScoresArr[x][0] + " - " + currentScoresArr[x][1], file=file1)
+                for x in range(len(currentScoresArr) // 2): 
+                    print(currentScoresArr[2 * x] + " - " + currentScoresArr[2 * x + 1], file=file1)
             file1.close()
 
-
-        
-                
-
-
+# defaultText = ["Sam - 0", "Keyan - 0", "Oliver - 0", "Sam - 0", "Andrei - 0", "Alan - 0", "Jonathan - 0"]
+# ["Sam", 0, "Keyan", 0, "Oliver", 0...]

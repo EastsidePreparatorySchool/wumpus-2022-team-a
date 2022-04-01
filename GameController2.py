@@ -212,8 +212,11 @@ while gameOn:
 
     turnNum += 1
 
-try:
-    highScores.addHighScore(playerName, player.computeEndScore(wumpus.getWumpState(), turnNum))
-    print(highScores.getHighScores())
-except:
-    print("gameOn is false. error involving high score (line 36, in addHighScore)")
+# try:
+#     highScores.addHighScore(playerName, player.computeEndScore(wumpus.getWumpState(), turnNum))
+#     print(highScores.getHighScores())
+# except:
+#     print("gameOn is false. error involving high score (line 36, in addHighScore)")
+
+highScores.addHighScore(playerName, player.computeEndScore(wumpus.getWumpState(), turnNum))
+print(highScores.getHighScores())
