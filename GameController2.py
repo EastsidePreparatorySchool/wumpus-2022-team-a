@@ -76,6 +76,7 @@ print("game initialized")
 print("Welcome to Hunt the Wumpus!")
 input("Press enter to begin! ")
 playerName = input("What's your name? ")
+
 location.spawnItems(wumpus, cave, player)
 cave.genNewMap(location.getHazards())
 # for diagnostic purposes
@@ -219,4 +220,7 @@ while gameOn:
 #     print("gameOn is false. error involving high score (line 36, in addHighScore)")
 
 highScores.addHighScore(playerName, player.computeEndScore(wumpus.getWumpState(), turnNum))
-print(highScores.getHighScores())
+# write to console
+highScores.printHighScores()
+# write to file
+highScores.writeHighScores()
