@@ -58,7 +58,11 @@ def updateAccessibilityFringe(cave, fringe):
 
 def getRandomMinFromAccessibilityFringe(fringe):
     fringe = sorted(fringe, key=operator.itemgetter(0))
-    minVal = fringe[0][0]
+    minVal = 100000000000
+    for f in fringe:
+        if f[0] <= minVal:
+            minVal = f[0]
+
     options = [f for f in fringe if f[0] == minVal]
 
     returnVal = random.choice(options)

@@ -88,7 +88,7 @@ class Cave:
             self.connectionList[i] = newConList
         file.close()
 
-        return self.caverns
+        return self.caverns, self.adjacencyList, self.connectionList
 
     def saveMapFile(self, path):
         # saves a files with the information stored in the map
@@ -241,13 +241,13 @@ class Cave:
         # print("25 26 27 28 29 30")
 
 cave = Cave()
-# cave.genNewMap([2, 13, 22], None)
-# cave.printSelf()
+cave.genNewMap({2:'p', 13:'b', 22:'b'})
+cave.printSelf()
 # print(areAllAccessible(cave))
 
-path = "MapFiles/demofile.txt"
+# path = "MapFiles/demofile.txt"
 # cave.genNewMap([3, 26, 19])
 # cave.saveMapFile(path)
 # cave.printSelf()
-cave.loadPrevGame(path)
+# cave.loadPrevGame(path)
 # cave.printSelf()
