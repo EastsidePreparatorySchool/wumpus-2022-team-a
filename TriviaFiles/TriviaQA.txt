@@ -1,357 +1,55 @@
-qHow many feet are in a mile?
+qwHow many feet are in a mile?
 5280
-qWhat is the capitol of Washington State?
+qwWhat is the capitol of Washington State?
 olympia
-qWhat is the Wumpus's favorite color?
+qwWhat is the Wumpus's favorite color?
 orange
-qWhat length in meters is a nautical mile?
+qwWhat length in meters is a nautical mile?
 1852
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
-qquestion
-answer
+qwWhat is the airspeed velocity of an unladen swallow?
+what do you mean? an african or european swallow?|an african or european swallow?|an african or european swallow
+qmIn what phase was the moon on January 2, 2022?
+cnew|wfirst quarter|wfull|wthird quarter
+qmWhat does the wumpus never eat for breakfast?
+wadventurer's arms|cgold coins|cbats|wits friends
+qwWho invented the word "vomit"?
+shakespeare|william shakespeare
+qwWhat is the hottest planet in our solar system?
+venus
+qwHow many hearts does an octopus have?
+3|three
+qwWhat is the loudest animal on Earth?
+sperm whale
+qwHow long do elephant pregnancies last?
+22 months|twenty two months|twenty-two months|1 year 10 months|one year and ten months|a year and ten months
+qwHavana is the capital of what country?
+cuba
+qwWhat's the city with the most diversity in terms of language?
+new york city
+qwWhat's the smallest country in the world?
+vatican city
+qwWhich president died a month into office (just the last name)?
+harrison
+qwWhich country won the first-ever soccer World Cup in 1930?
+uruguay
+qwWhat country has the most natural lakes?
+canada
+qwIn what country would you find Lake Bled?
+slovenia
+qwWhich country consumes the most chocolate per capita?
+switzerland
+qwWhat is the most consumed manufactured drink in the world?
+tea
+qwWhat is a female elephant called?
+cow|a cow
+qwWhat is the largest city in Europe by population?
+istanbul
 
 
 notes:
 -questions have "q" before them
+-the letter after q is w or m -- m for multiple choice, w for written answers
+  -written answer can have multiple correct answers
 -all question and answers must precede other lines (e.g. empty or informational lines)
 -answer is on line below question
 -answer is lowercase
