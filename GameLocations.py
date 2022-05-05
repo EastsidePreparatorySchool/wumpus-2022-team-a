@@ -113,13 +113,17 @@ class GameLocations:
     def getWarnings(self, wumpus, cave, player):
         hazards = self.getHazards()
 
-        possibleCaves = cave.getConnections(player.pos)
-        possibleHazards = []
+        # possibleCaves = cave.getConnections(player.pos)
+        possibleCaves = []
+        for currCave in cave.caverns:
+            if 0 < currCave.getDist(player.pos) <= 2:
+                possibleCaves.append(currCave)
 
-        for cave in possibleCaves:
+        possibleHazards = []
+        for currCave in possibleCaves:
             #if cave in hazards.keys():
                 #possibleHazards.append(hazards.get(cave))
-            possibleHazards.append(hazards.get(cave))
+            possibleHazards.append(hazards.get(currCave))
 
         if wumpus.getWumpPos() in possibleCaves:
             possibleHazards.append("WUMPUS")
