@@ -59,7 +59,7 @@ class Cave:
             # add empty array to list
             self.connectionList.update({i: []})
 
-        self.hazards = {}
+        self.hazards = []
 
     def loadPrevGame(self, gamePath):
         # loads a previous game from a path,
@@ -172,7 +172,9 @@ class Cave:
         # overriding the map stored here,
         # then returns the map
 
-        makeAllAccessible(self, hazards.keys())
+        self.importHazards(hazards)
+
+        makeAllAccessible(self, self.hazards)
         makeMoreConnections(self, 15)
 
         return self.caverns, self.adjacencyList, self.connectionList
@@ -244,6 +246,13 @@ class Cave:
     def getNumDualConnections(self, cav1, cav2):
         # returns the number of total connections for two caverns
         return len(self.getConnections(cav1)) + len(self.getConnections(cav2))
+
+    def importHazards(self, haz):
+        self.hazards = []
+
+        for i in self.caverns:
+            if haz[i] != "":
+                self.hazards.append(i)
     
     def addAdjacent(self, index, addIndex):
         idx = addIndex % 30
