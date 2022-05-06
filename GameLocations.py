@@ -1,7 +1,7 @@
 import random
 
 # from GameController2 import GameController2
-# from cave import Cave
+# from Cave import Cave
 # from Player import Player
 # from LazyWumpusObject import LazyWumpus
 

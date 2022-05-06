@@ -2,7 +2,7 @@ import pygame
 import random
 from PIL import Image
 from GameLocations import GameLocations
-from cave import Cave
+from CaveObject import Cave
 from Player import Player
 from LazyWumpusObject import LazyWumpus
 from Trivia import Trivia

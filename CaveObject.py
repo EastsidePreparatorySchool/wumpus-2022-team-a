@@ -274,6 +274,8 @@ class Cave:
 cave = Cave()
 # cave.genNewMap({2:'p', 13:'b', 22:'b'})
 # cave.printSelf()
+cave.genNewMap({2:'p', 13:'b', 22:'b'})
+cave.printSelf()
 # print(areAllAccessible(cave))
 
 # path = "MapFiles/demofile.txt"
@@ -295,3 +297,4 @@ locations.spawnItems(None, cave, None)
 cave.genNewMap(locations.getHazards())
 print(locations.getHazards()) 
 cave.printSelf()
+# cave.printSelf()
