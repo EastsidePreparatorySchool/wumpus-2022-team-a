@@ -37,16 +37,25 @@ def makeAllAccessible(cave, hazards):
 
     # make connections to each of the hazards
     for h in hazards:
-        other = random.choice(cave.getAdjacent(h))
-        if len(cave.getConnections(h)) < 3 and len(cave.getConnections(other)) < 3:
-            cave.addConnection(h, other)
-            updateAccessibilityFringe(cave, fringe)
+        if h != "":
+            print(h)
+            other = random.choice(cave.getAdjacent(h))
+            if len(cave.getConnections(h)) < 3 and len(cave.getConnections(other)) < 3:
+                cave.addConnection(h, other)
+                updateAccessibilityFringe(cave, fringe)
 
 def isInAccessibilityFringe(c, other, fringe):
     for f in fringe:
         if f[1] == c or f[2] == c:
             if f[1] == other or f[2] == other:
                 return True
+
+    return False
+
+def isInDistanceFringe(c, fringe):
+    for f in fringe:
+        if f[1] == c:
+            return True
 
     return False
 

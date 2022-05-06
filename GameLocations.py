@@ -116,7 +116,7 @@ class GameLocations:
         # possibleCaves = cave.getConnections(player.pos)
         possibleCaves = []
         for currCave in cave.caverns:
-            if 0 < currCave.getDist(player.pos) <= 2:
+            if 0 < cave.getDist(currCave, player.pos) <= 2:
                 possibleCaves.append(currCave)
 
         possibleHazards = []

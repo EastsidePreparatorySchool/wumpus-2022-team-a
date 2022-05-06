@@ -59,6 +59,8 @@ class Cave:
             # add empty array to list
             self.connectionList.update({i: []})
 
+        self.hazards = {}
+
     def loadPrevGame(self, gamePath):
         # loads a previous game from a path,
         # overrides the map stored here,
@@ -183,6 +185,35 @@ class Cave:
         randRow = random.choice(self.caverns)
         return random.choice(randRow)
 
+    def getDist(self, cav1, cav2):
+        current = cav1
+        fringe = []
+        visited = []
+
+        for c in cave.getConnections(current):
+            if not isInDistanceFringe(c, fringe) and c not in visited:
+                fringe.append((1, c))
+
+        while fringe:
+            # make fringe priority queue based on num of connections
+            fringe = sorted(fringe, key=operator.itemgetter(0))
+
+            # get new node
+            newConnection = fringe.pop(0)
+            cost = newConnection[0]
+            current = newConnection[1]
+            if current not in visited: visited.append(current)
+
+            # if it has found the correct cavern
+            if current == cav2:
+                # goal check completed
+                return cost
+
+            # add neighbors to fringe
+            for c in self.getConnections(current):
+                if not isInDistanceFringe(c, fringe) and c not in visited:
+                    fringe.append((cost+1, c))
+
     def isAccessible(self, cavern):
         if cavern == 0: return True
         current = cavern
@@ -241,8 +272,8 @@ class Cave:
         # print("25 26 27 28 29 30")
 
 cave = Cave()
-cave.genNewMap({2:'p', 13:'b', 22:'b'})
-cave.printSelf()
+# cave.genNewMap({2:'p', 13:'b', 22:'b'})
+# cave.printSelf()
 # print(areAllAccessible(cave))
 
 # path = "MapFiles/demofile.txt"
@@ -251,3 +282,16 @@ cave.printSelf()
 # cave.printSelf()
 # cave.loadPrevGame(path)
 # cave.printSelf()
+
+# path = "MapFiles/demofile.txt"
+# cave.loadPrevGame(path)
+# cave.printSelf()
+# print(cave.getDist(0, 9))
+
+from GameLocations import GameLocations
+locations = GameLocations()
+locations.spawnItems(None, cave, None)
+
+cave.genNewMap(locations.getHazards())
+print(locations.getHazards()) 
+cave.printSelf()
