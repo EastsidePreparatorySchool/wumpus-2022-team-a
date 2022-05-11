@@ -1,5 +1,6 @@
 import pygame
 import random
+import time
 from PIL import Image
 from GameLocations import GameLocations
 from cave import Cave
@@ -11,17 +12,68 @@ from HighScoresObject import HighScores
 
 from pygame.locals import *
 
-# pygame.init()
-# screen = pygame.display.set_mode((800, 600))
+BLACK = (0, 0, 0)
+RED = (255, 0, 0)
+GRAY = (200, 200, 200)
+WHITE = (250, 250, 250)
 
-# background = pygame.image.load('images/Koala.jpg')
+pygame.init()
+screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+
+isContinued = False
+image = pygame.image.load(r'Images\MainScreen.png')
+image = pygame.transform.scale(image, (1280, 720))
+while isContinued == False:
+    screen.blit(image, (0, 0))
+    for event in pygame.event.get() :
+  
+
+        if event.type == pygame.QUIT :
+  
+            pygame.quit()
+
+            quit()
+
+        if event.type == KEYDOWN:
+            if event.key == K_RETURN : 
+
+                print("Game Started")
+                isContinued = True
+                # Draws the surface object to the screen.  
+        
+    pygame.display.update() 
 
 
-# def drawBackground():
-#     screen.blit(background, (0, 0))
+
+displayText = 'this is the display text'
+inputText = ''
+
+answer = inputText
+
+font = pygame.font.SysFont(None, 32)
+
+displayImg = font.render(displayText, True, WHITE)
+displayImg2 = font.render(displayText, True, WHITE)
+inputImg = font.render(inputText, True, WHITE)
 
 
-# drawBackground()
+displayRect = displayImg.get_rect()
+displayRect2 = displayImg.get_rect()
+displayRect.topleft = (20, 420)
+displayRect2.topleft = (20, 450)
+
+inputRect = inputImg.get_rect()
+inputRect.topleft = (20, 530)
+cursor = Rect(inputRect.topright, (3, inputRect.height))
+
+
+
+
+
+
+
+running = True
+background = BLACK
 
 
 player = Player()
@@ -41,65 +93,34 @@ highScores = HighScores()
 print("game initialized")
 
 
-# turnNum = 0
-# # Variable to keep our game loop runngameOn = True
-# gameOn = True
-# # Our game loop
-# while gameOn:
 
-#     # FPS (in ms delay)
-#     pygame.time.delay(20)
-
-
-#     # for loop through the event queue
-#     for event in pygame.event.get():
-
-#         # Check for KEYDOWN event
-#         if event.type == KEYDOWN:
-
-#             # If the Backspace key has been pressed set
-#             # running to false to exit the main loop
-#             if event.key == K_ESCAPE:
-#                 gameOn = False
-
-#         # Check for QUIT event
-#         elif event.type == QUIT:
-#             gameOn = False
-
-#         if event.type == pygame.MOUSEBUTTONDOWN:
-#             print("clickkk")
-
-#     pygame.display.update()
-
-#     turnNum += 1
-
-print("Welcome to Hunt the Wumpus!")
-input("Press enter to begin! ")
-playerName = input("What's your name? ")
+displayImg = font.render("It begins in a deeeeep dark cavern", True, WHITE)
+displayImg2 = font.render("'Enter' to continue . . .", True, WHITE)
+# input("Press enter to begin! ")
+# playerName = input("What's your name? ")
 location.spawnItems(wumpus, cave, player)
 cave.genNewMap(location.getHazards())
 # for diagnostic purposes
 print(location.getHazards())
 # cave.printSelf()
 
+
+
+
 def PlayerMove():
 
-    # based = False
+    based = False
 
-    # while not based:
-    #     move = input("Which way to go next????")
-    #     if int(move) in cave.getConnections(player.pos):
-    #         player.pos = int(move)
-    #         print("based")
-    #         based = True
-    move = input("Where do you want to move?")
+    while not based:
+        move = getInput("Which way to go next????")
+        if int(move) in cave.getConnections(player.pos):
+            player.pos = int(move)
+            print("based")
+            based = True
     while int(move) not in cave.getConnections(player.pos):
        move = input("Not a valid response. Enter the number room you want to enter.")
     player.pos = int(move)
-    # you get a coin when you move
-    player.coins += 1
-    print("you moved")
-
+    
 def ShootArrow():
     global gameOn
     direction = input("which room to shoot arrow at????")
@@ -136,14 +157,83 @@ def BuyArrow():
         print("failed to get an arrow")
 
 
+def getInput(question):
+
+    inputText = ""
+    inputImg = font.render(inputText, True, WHITE)
+    displayImg2 = font.render(question, True, WHITE)
+
+    playerInput = ""
+    playerAnswered = False
+
+    while not playerAnswered:
+
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.display.quit()
+                exit()
+
+            if event.type == KEYDOWN:
+
+                if event.key == K_RETURN:
+                    
+                    playerInput = inputText
+                    inputText = ""
+
+                    playerAnswered = True
+                    
+                
+                if event.key == K_BACKSPACE:
+                    if len(inputText)>0:
+                        inputText = inputText[:-1]
+                elif event.key != K_RETURN:
+                    inputText += event.unicode
+
+                inputImg = font.render(inputText, True, WHITE)
+                
+                inputRect.size=inputImg.get_size()
+                cursor.topleft = inputRect.topright
+
+
+        screen.fill(background)
+        screen.blit(inputImg, inputRect)
+        screen.blit(displayImg, displayRect)
+        screen.blit(displayImg2, displayRect2)
+        if time.time() % 1 > 0.5:
+            pygame.draw.rect(screen, WHITE, cursor)
+        pygame.display.update()
+
+    return playerInput
+
+
 turnNum = 0
 # Variable to keep our game loop run
 gameOn = True
 # Our game loop
 while gameOn:
     # one turn per loop
+
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            gameOn = False
+
+        if event.type == KEYDOWN:
+
+            # If the Backspace key has been pressed set
+            # running to false to exit the main loop
+            if event.key == K_ESCAPE:
+                gameOn = False
+
+    # wumpAnswer = getInput("wump?????")
+    # print(wumpAnswer)
+
+    answer = getInput("move OR shoot OR buy arrow")
+
+
     hazards = location.checkHazards(player.pos, wumpus, cave, player)
-    print("\nHazards:", hazards)
+    # hazardMessage = str("\nHazards:", hazards)
+    displayImg = font.render("there might be hazards idk", True, WHITE)
+
     if hazards == "W":
         # fight the wumpus
         FightWumpus()
@@ -155,15 +245,31 @@ while gameOn:
     print("Cave connections:", cave.getConnections(player.pos))
     print("Warnings:", location.getWarnings(wumpus, cave, player))
 
-    actionChoice = input("shoot or move or buy arrow?")
-    if actionChoice == "shoot":
+    # actionChoice = input("shoot or move or buy arrow?")
+    displayImg2 = displayImg2 = font.render("'shoot OR move OR buy arrow", True, WHITE)
+    
+
+    if answer == "shoot":
         ShootArrow()
-    elif actionChoice == "move":   
+
+    elif answer == "move":   
         PlayerMove()
-    elif actionChoice == "buy arrow":
+
+    elif answer == "buy arrow":
         BuyArrow()
 
+
+    screen.fill(background)
+    screen.blit(inputImg, inputRect)
+    screen.blit(displayImg, displayRect)
+    screen.blit(displayImg2, displayRect2)
+    if time.time() % 1 > 0.5:
+        pygame.draw.rect(screen, WHITE, cursor)
+    pygame.display.update()
+
     turnNum += 1
+
+
 
 try:
     highScores.addHighScore(playerName, player.computeEndScore(wumpus.getWumpState(), turnNum))
