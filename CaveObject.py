@@ -59,6 +59,8 @@ class Cave:
             # add empty array to list
             self.connectionList.update({i: []})
 
+        self.hazards = []
+
     def loadPrevGame(self, gamePath):
         # loads a previous game from a path,
         # overrides the map stored here,
@@ -88,7 +90,7 @@ class Cave:
             self.connectionList[i] = newConList
         file.close()
 
-        return self.caverns
+        return self.caverns, self.adjacencyList, self.connectionList
 
     def saveMapFile(self, path):
         # saves a files with the information stored in the map
@@ -170,7 +172,9 @@ class Cave:
         # overriding the map stored here,
         # then returns the map
 
-        makeAllAccessible(self, hazards.keys())
+        self.importHazards(hazards)
+
+        makeAllAccessible(self, self.hazards)
         makeMoreConnections(self, 15)
 
         return self.caverns, self.adjacencyList, self.connectionList
@@ -182,6 +186,35 @@ class Cave:
     def getRandomCavern(self):
         randRow = random.choice(self.caverns)
         return random.choice(randRow)
+
+    def getDist(self, cav1, cav2):
+        current = cav1
+        fringe = []
+        visited = []
+
+        for c in cave.getConnections(current):
+            if not isInDistanceFringe(c, fringe) and c not in visited:
+                fringe.append((1, c))
+
+        while fringe:
+            # make fringe priority queue based on num of connections
+            fringe = sorted(fringe, key=operator.itemgetter(0))
+
+            # get new node
+            newConnection = fringe.pop(0)
+            cost = newConnection[0]
+            current = newConnection[1]
+            if current not in visited: visited.append(current)
+
+            # if it has found the correct cavern
+            if current == cav2:
+                # goal check completed
+                return cost
+
+            # add neighbors to fringe
+            for c in self.getConnections(current):
+                if not isInDistanceFringe(c, fringe) and c not in visited:
+                    fringe.append((cost+1, c))
 
     def isAccessible(self, cavern):
         if cavern == 0: return True
@@ -213,6 +246,13 @@ class Cave:
     def getNumDualConnections(self, cav1, cav2):
         # returns the number of total connections for two caverns
         return len(self.getConnections(cav1)) + len(self.getConnections(cav2))
+
+    def importHazards(self, haz):
+        self.hazards = []
+
+        for i in self.caverns:
+            if haz[i] != "":
+                self.hazards.append(i)
     
     def addAdjacent(self, index, addIndex):
         idx = addIndex % 30
@@ -241,13 +281,29 @@ class Cave:
         # print("25 26 27 28 29 30")
 
 cave = Cave()
-# cave.genNewMap([2, 13, 22], None)
+# cave.genNewMap({2:'p', 13:'b', 22:'b'})
 # cave.printSelf()
+cave.genNewMap({2:'p', 13:'b', 22:'b'})
+cave.printSelf()
 # print(areAllAccessible(cave))
 
-path = "MapFiles/demofile.txt"
+# path = "MapFiles/demofile.txt"
 # cave.genNewMap([3, 26, 19])
 # cave.saveMapFile(path)
 # cave.printSelf()
-cave.loadPrevGame(path)
+# cave.loadPrevGame(path)
+# cave.printSelf()
+
+# path = "MapFiles/demofile.txt"
+# cave.loadPrevGame(path)
+# cave.printSelf()
+# print(cave.getDist(0, 9))
+
+from GameLocations import GameLocations
+locations = GameLocations()
+locations.spawnItems(None, cave, None)
+
+cave.genNewMap(locations.getHazards())
+print(locations.getHazards()) 
+cave.printSelf()
 # cave.printSelf()

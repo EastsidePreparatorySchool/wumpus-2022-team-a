@@ -3,7 +3,7 @@ import random
 import time
 from PIL import Image
 from GameLocations import GameLocations
-from cave import Cave
+from CaveObject import Cave
 from Player import Player
 from LazyWumpusObject import LazyWumpus
 from Trivia import Trivia
@@ -132,7 +132,7 @@ def ShootArrow():
         gameOn = False
     else:
         print("missed arrow")
-        wumpus.changeToAwake()
+        #wumpus.changeToAwake()  this is done in GameLocations.shootArrow
     if player.arrows == 0:
         print("wumpus senses that you're out of arrows and eats you")
         gameOn = False
@@ -143,7 +143,8 @@ def FightWumpus():
     if trivia.challenge(3, 5, player):
         print("you escape the wumpus and move to a random connected room")
         player.pos = random.choice(cave.getConnections(player.pos))
-        # need to wake wumpus up
+        wumpus.changeToAwake()
+        wumpus.moveWumpus(cave)
     else:
         print("the wumpus eats you")
         gameOn = False
@@ -155,6 +156,19 @@ def BuyArrow():
         print("gained one arrow")
     else:
         print("failed to get an arrow")
+
+def GetMovedByBat():
+    print("a bat sweeps you away")
+    player.pos = random.randint(0, 29)
+
+def FallIntoPit():
+    global gameOn
+    print("you step into a pit. you attempt to catch yourself")
+    if trivia.challenge(2, 3, player):
+        print("you pull yourself out of the pit and find yourself in room 0")
+    else:
+        gameOn = False
+        print("you plunge into darkness. game over")
 
 
 def getInput(question):
@@ -240,10 +254,42 @@ while gameOn:
         if not gameOn:
             # don't do the rest of the turn if you're dead
             break
+    
+    if hazards == "B":
+        GetMovedByBat()
+        # moving is taken care of in GameLocations
+        # continue to count this as a full turn, so hazards and warnings
+        # are checked before player move/shoot
+        continue
+    if hazards == "P":
+        # moving to cavern 0 is done in GameLocations
+        FallIntoPit()
+        if not gameOn:
+            break
+    if hazards == "WB":
+        wumpus.changeToAwake()
+        wumpus.moveWumpus(cave)
+        print("you glimpse the wumpus")
+        GetMovedByBat()
+        continue
+    if hazards == "WP":
+        print("you glimpse the wumpus")
+        FallIntoPit()
+        if not gameOn:
+            break
+        wumpus.changeToAwake()
+        wumpus.moveWumpus(cave)
 
     print("Player position:", player.pos)
     print("Cave connections:", cave.getConnections(player.pos))
-    print("Warnings:", location.getWarnings(wumpus, cave, player))
+    warnings = location.getWarnings(wumpus, cave, player)
+    if "PIT" in warnings:
+        print("You feel a draft")
+    if "BAT" in warnings:
+        print("You hear large wings flapping")
+    if "WUMPUS" in warnings:
+        print("You smell a wumpus")
+    
 
     # actionChoice = input("shoot or move or buy arrow?")
     displayImg2 = displayImg2 = font.render("'shoot OR move OR buy arrow", True, WHITE)

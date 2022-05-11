@@ -1,5 +1,5 @@
 import random
-from cave import Cave
+from CaveObject import Cave
 
 class LazyWumpus:
     wumpState = "ASLEEP"

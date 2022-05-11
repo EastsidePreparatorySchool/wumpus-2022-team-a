@@ -47,7 +47,7 @@ class Trivia:
         questionNum = 0
         numUnusedTrivia = 0
 
-        # count how many questions are in the QA file
+        # count how many used and unused questions are in the QA file
         for line in allTrivia:
             if (line[0] != 'q'):
                 continue
@@ -67,13 +67,43 @@ class Trivia:
                 chosenQNum += 1
         
         self.UsedTrivia.append(chosenQNum)
-        answer = input(allTrivia[chosenQNum * 2][1:])
-        # ignoring the last character of each line of the file, which is \n
-        if (str(answer).lower() == allTrivia[chosenQNum * 2 + 1][:-1]):
+        question = allTrivia[chosenQNum * 2]
+        questionText = question[2:] # what the player will be asked
+        isWritten = (question[1] == 'w')
+        answerLine = allTrivia[chosenQNum * 2 + 1][:-1] # line holding answers (includes all choices), does not include line break
+        correctAnswers = []
+        # written answer question
+        if isWritten:
+            correctAnswers = answerLine.split("|")
+        # multiple choice question
+        else:
+            # make a list of the available choices, with the leading c or w
+            choices = answerLine.split("|")
+            random.shuffle(choices)
+            questionText += "Choices:\n"
+            for choice in choices:
+                questionText += '\t' + choice[1:] + '\n'
+                if choice[0] == 'c':
+                    correctAnswers.append(choice[1:])
+            choices = [choice[1:] for choice in choices] # remove leading c/w
+        while True:
+            playerAnswer = input(questionText)
+            if isWritten or playerAnswer in choices:
+                break
+            print(playerAnswer + " is invalid. Type one of the given choices.")
+        
+        if str(playerAnswer).lower() in correctAnswers:
             print("Correct!")
             return True
         else:
-            print("Sorry! The correct answer was " + allTrivia[chosenQNum * 2 + 1][:-1] + ".")
+            #print("Sorry! The correct answer was " + allTrivia[chosenQNum * 2 + 1][:-1] + ".")
+            if len(correctAnswers) == 1:
+                print("Sorry! The correct answer was: " + correctAnswers[0])
+            else:
+                message = "Sorry! The acceptible answers were: "
+                for answer in correctAnswers:
+                    message += "\n\t" + answer
+                print(message)
             return False
     
     def getSecret(self, locations, cave):
@@ -119,17 +149,17 @@ class Trivia:
         return secretsList
     
 # temporary player object for testing (either the object or the class works)
-#class Plr:
-#    def __init__(self):
-#        self.coins = 40
-#PlayerObj = Plr()
+class Plr:
+    def __init__(self):
+        self.coins = 40
+PlayerObj = Plr()
 #class PlayerObj:
 #    coins = 12
 #print(PlayerObj.coins)
 #print(Trivia.challenge(2, 3, PlayerObj))
 #print(PlayerObj.coins)
 
-#Trv = Trivia()
-#Trv.challenge(3, 5, PlayerObj)
+Trv = Trivia()
+Trv.challenge(3, 5, PlayerObj)
 #Trv.getSecret(0, 0)
 #Trv.getKnownSecrets()
