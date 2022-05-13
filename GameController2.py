@@ -23,26 +23,6 @@ screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 isContinued = False
 image = pygame.image.load(r'Images\MainScreen.png')
 image = pygame.transform.scale(image, (1280, 720))
-while isContinued == False:
-    screen.blit(image, (0, 0))
-    for event in pygame.event.get() :
-  
-
-        if event.type == pygame.QUIT :
-  
-            pygame.quit()
-
-            quit()
-
-        if event.type == KEYDOWN:
-            if event.key == K_RETURN : 
-
-                print("Game Started")
-                isContinued = True
-                # Draws the surface object to the screen.  
-        
-    pygame.display.update() 
-
 
 
 displayText = 'this is the display text'
@@ -67,12 +47,6 @@ inputRect.topleft = (20, 530)
 cursor = Rect(inputRect.topright, (3, inputRect.height))
 
 
-
-
-
-
-
-running = True
 background = BLACK
 
 
@@ -176,7 +150,6 @@ def FallIntoPit():
         gameOn = False
         print("you plunge into darkness. game over")
 
-
 def getInput(question):
 
     inputText = ""
@@ -225,6 +198,25 @@ def getInput(question):
 
     return playerInput
 
+while isContinued == False:
+    screen.blit(image, (0, 0))
+    for event in pygame.event.get() :
+  
+
+        if event.type == pygame.QUIT :
+  
+            pygame.quit()
+
+            quit()
+
+        if event.type == KEYDOWN:
+            if event.key == K_RETURN : 
+
+                print("Game Started")
+                isContinued = True
+                # Draws the surface object to the screen.  
+        
+    pygame.display.update() 
 
 
 
