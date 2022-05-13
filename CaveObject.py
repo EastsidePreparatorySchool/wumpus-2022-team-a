@@ -1,6 +1,7 @@
 
 from CaveGen import *
 import random
+import os
 import pprint
 
 class Cave:
@@ -109,6 +110,23 @@ class Cave:
             file.write(string)
 
         file.close()
+
+    def listMapFiles(self):
+        # returns a list of paths for map files
+        basePath = "MapFiles/"
+        listOfFiles = []
+
+        for root, dirs, files in os.walk(basePath):
+            for file in files:
+                listOfFiles.append(os.path.join(root,file))
+
+        listOfNames = []
+        for name in listOfFiles:
+            splName1 = name.split(".")
+            splName2 = splName1[0].split("/")
+            listOfNames.append(splName2[1])
+
+        return listOfFiles, listOfNames
 
     def loadPresetMap(self):
         # in future, probably need preset number as a parameter
@@ -240,9 +258,6 @@ class Cave:
         return cav2 in self.getAdjacent(cav1)
 
     def getConnections(self, cavern):
-
-        print("CAVERN:")
-        print(cavern)
         # returns the caverns connected to a certain cavern
         return self.connectionList[cavern]
     
@@ -285,23 +300,6 @@ class Cave:
         # print("25 26 27 28 29 30")
 
 # cave = Cave()
-# # cave.genNewMap({2:'p', 13:'b', 22:'b'})
-# # cave.printSelf()
-# # cave.genNewMap({2:'p', 13:'b', 22:'b'})
-# # cave.printSelf()
-# # print(areAllAccessible(cave))
-
-# # path = "MapFiles/demofile.txt"
-# # cave.genNewMap([3, 26, 19])
-# # cave.saveMapFile(path)
-# # cave.printSelf()
-# # cave.loadPrevGame(path)
-# # cave.printSelf()
-
-# # path = "MapFiles/demofile.txt"
-# # cave.loadPrevGame(path)
-# # cave.printSelf()
-# # print(cave.getDist(0, 9))
 
 # from GameLocations import GameLocations
 # locations = GameLocations()
@@ -310,4 +308,5 @@ class Cave:
 # cave.genNewMap(locations.getHazards())
 # print(locations.getHazards()) 
 # cave.printSelf()
-# # cave.printSelf()
+
+# cave.listMapFiles()
