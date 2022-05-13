@@ -77,17 +77,23 @@ background = BLACK
 
 
 player = Player()
+print("Player initialized")
 
 wumpus = LazyWumpus()
+print("Wumpus initialized")
 
 cave = Cave()
+print("Cave initialized")
 
 location = GameLocations()
+print("Location initialized")
 # location.spawnItems(wumpus, cave, player)
 
 trivia = Trivia()
+print("Trivia initialized")
 
 highScores = HighScores()
+print("Highscores initialized")
 
 
 print("game initialized")
@@ -118,14 +124,14 @@ def PlayerMove():
             print("based")
             based = True
     while int(move) not in cave.getConnections(player.pos):
-       move = input("Not a valid response. Enter the number room you want to enter.")
+       move = getInput("Not a valid response. Enter the number room you want to enter.")
     player.pos = int(move)
     
 def ShootArrow():
     global gameOn
-    direction = input("which room to shoot arrow at????")
+    direction = getInput("which room to shoot arrow at????")
     while int(direction) not in cave.getConnections(player.pos):
-       direction = input("Not a valid response. Enter the number room you want to shoot into.")
+       direction = getInput("Not a valid response. Enter the number room you want to shoot into.")
     if location.shootArrow(int(direction), wumpus, cave, player):
         print("you killed the wumpus!")
         wumpus.changeToDead()
@@ -218,6 +224,8 @@ def getInput(question):
         pygame.display.update()
 
     return playerInput
+
+
 
 
 turnNum = 0

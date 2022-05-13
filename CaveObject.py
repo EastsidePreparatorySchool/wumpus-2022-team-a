@@ -250,7 +250,8 @@ class Cave:
     def importHazards(self, haz):
         self.hazards = []
 
-        for i in self.caverns:
+        for i in range(30):
+            print(i)
             if haz[i] != "":
                 self.hazards.append(i)
     
@@ -283,8 +284,8 @@ class Cave:
 cave = Cave()
 # cave.genNewMap({2:'p', 13:'b', 22:'b'})
 # cave.printSelf()
-cave.genNewMap({2:'p', 13:'b', 22:'b'})
-cave.printSelf()
+# cave.genNewMap({2:'p', 13:'b', 22:'b'})
+# cave.printSelf()
 # print(areAllAccessible(cave))
 
 # path = "MapFiles/demofile.txt"
