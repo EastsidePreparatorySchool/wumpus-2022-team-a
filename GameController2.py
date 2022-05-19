@@ -25,7 +25,7 @@ Background = pygame.image.load(r'Images\MainScreen.png')
 Background = pygame.transform.scale(Background, (1280, 720))
 
 Caution = pygame.image.load(r'Images\Caution.png')
-Caution = pygame.transform.scale(Caution, (52, 60))
+Caution = pygame.transform.scale(Caution, (52, 56))
 
 
 displayText = 'this is the display text'
@@ -82,7 +82,7 @@ displayImg2 = font.render("'Enter' to continue . . .", True, WHITE)
 # input("Press enter to begin! ")
 # playerName = input("What's your name? ")
 location.spawnItems(wumpus, cave, player)
-cave.genNewMap(location.getHazards())
+cave.loadPrevGame(r'MapFiles\demoFile.txt')
 # for diagnostic purposes
 print(location.getHazards())
 # cave.printSelf()
@@ -192,7 +192,7 @@ def getInput(question):
 
 
         screen.fill(background)
-        screen.blit(Caution, (0, 0))
+        screen.blit(Caution, (900, 550))
         screen.blit(inputImg, inputRect)
         screen.blit(displayImg, displayRect)
         screen.blit(displayImg2, displayRect2)
@@ -235,7 +235,7 @@ gameOn = True
 while gameOn:
     # one turn per loop
     screen.fill(background)
-    screen.blit(Caution, (0, 0))
+    screen.blit(Caution, (900, 550))
 
     for event in pygame.event.get():
         if event.type == QUIT:
