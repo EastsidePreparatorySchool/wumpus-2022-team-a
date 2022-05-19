@@ -21,8 +21,11 @@ pygame.init()
 screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
 isContinued = False
-image = pygame.image.load(r'Images\MainScreen.png')
-image = pygame.transform.scale(image, (1280, 720))
+Background = pygame.image.load(r'Images\MainScreen.png')
+Background = pygame.transform.scale(Background, (1280, 720))
+
+Caution = pygame.image.load(r'Images\Caution.png')
+Caution = pygame.transform.scale(Caution, (52, 60))
 
 
 displayText = 'this is the display text'
@@ -95,11 +98,11 @@ def PlayerMove():
         move = getInput("Which way to go next????")
         if int(move) in cave.getConnections(player.pos):
             player.pos = int(move)
-            print("based")
+            print("Moved into", move)
             based = True
-    while int(move) not in cave.getConnections(player.pos):
-       move = getInput("Not a valid response. Enter the number room you want to enter.")
-    player.pos = int(move)
+        
+        else:
+            move = getInput("Not a valid response. Enter the number room you want to enter.")
     
 def ShootArrow():
     global gameOn
@@ -189,6 +192,7 @@ def getInput(question):
 
 
         screen.fill(background)
+        screen.blit(Caution, (0, 0))
         screen.blit(inputImg, inputRect)
         screen.blit(displayImg, displayRect)
         screen.blit(displayImg2, displayRect2)
@@ -199,7 +203,11 @@ def getInput(question):
     return playerInput
 
 while isContinued == False:
-    screen.blit(image, (0, 0))
+    screen.blit(Background, (0, 0))
+
+
+
+        
     for event in pygame.event.get() :
   
 
@@ -226,6 +234,8 @@ gameOn = True
 # Our game loop
 while gameOn:
     # one turn per loop
+    screen.fill(background)
+    screen.blit(Caution, (0, 0))
 
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -238,15 +248,19 @@ while gameOn:
             if event.key == K_ESCAPE:
                 gameOn = False
 
+
+
     # wumpAnswer = getInput("wump?????")
     # print(wumpAnswer)
+    hazardMessage = str(cave.getConnections(player.pos))
+    hazards = location.checkHazards(player.pos, wumpus, cave, player)
+
+    displayImg = font.render(hazardMessage, True, WHITE)
 
     answer = getInput("move OR shoot OR buy arrow")
 
 
-    hazards = location.checkHazards(player.pos, wumpus, cave, player)
-    # hazardMessage = str("\nHazards:", hazards)
-    displayImg = font.render("there might be hazards idk", True, WHITE)
+
 
     if hazards == "W":
         # fight the wumpus
@@ -304,11 +318,12 @@ while gameOn:
     elif answer == "buy arrow":
         BuyArrow()
 
+    
 
-    screen.fill(background)
     screen.blit(inputImg, inputRect)
     screen.blit(displayImg, displayRect)
     screen.blit(displayImg2, displayRect2)
+
     if time.time() % 1 > 0.5:
         pygame.draw.rect(screen, WHITE, cursor)
     pygame.display.update()
