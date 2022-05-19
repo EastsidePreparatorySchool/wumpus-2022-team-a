@@ -8,6 +8,7 @@ from Player import Player
 from LazyWumpusObject import LazyWumpus
 from Trivia import Trivia
 from HighScoresObject import HighScores
+from Sound import Sound
 
 
 from pygame.locals import *
@@ -72,8 +73,10 @@ print("Trivia initialized")
 highScores = HighScores()
 print("Highscores initialized")
 
+sound = Sound(True)
+print("Sound initialized")
 
-print("game initialized")
+print("Game initialized")
 
 
 
@@ -98,6 +101,7 @@ def PlayerMove():
         move = getInput("Which way to go next????")
         if int(move) in cave.getConnections(player.pos):
             player.pos = int(move)
+            sound.playSound("coin")
             print("Moved into", move)
             based = True
         
@@ -107,10 +111,13 @@ def PlayerMove():
 def ShootArrow():
     global gameOn
     direction = getInput("which room to shoot arrow at????")
+    sound.playSound("shoot")
     while int(direction) not in cave.getConnections(player.pos):
        direction = getInput("Not a valid response. Enter the number room you want to shoot into.")
+       sound.playSound("shoot")
     if location.shootArrow(int(direction), wumpus, cave, player):
         print("you killed the wumpus!")
+        sound.playSound("arrHit")
         wumpus.changeToDead()
         gameOn = False
     else:
@@ -123,6 +130,7 @@ def ShootArrow():
 def FightWumpus():
     global gameOn
     print("the wumpus is here. Fight for your life")
+    sound.playSound("wumpus3")
     if trivia.challenge(3, 5, player):
         print("you escape the wumpus and move to a random connected room")
         player.pos = random.choice(cave.getConnections(player.pos))
@@ -130,6 +138,7 @@ def FightWumpus():
         wumpus.moveWumpus(cave)
     else:
         print("the wumpus eats you")
+        sound.playSound("plHit")
         gameOn = False
 
 def BuyArrow():
@@ -137,11 +146,13 @@ def BuyArrow():
     if trivia.challenge(2, 3, player):
         player.arrows += 1
         print("gained one arrow")
+        sound.playSound("coin")
     else:
         print("failed to get an arrow")
 
 def GetMovedByBat():
     print("a bat sweeps you away")
+    sound.playSound("bat2")
     player.pos = random.randint(0, 29)
 
 def FallIntoPit():
@@ -152,9 +163,9 @@ def FallIntoPit():
     else:
         gameOn = False
         print("you plunge into darkness. game over")
+        sound.playSound("amb1")
 
 def getInput(question):
-
     inputText = ""
     inputImg = font.render(inputText, True, WHITE)
     displayImg2 = font.render(question, True, WHITE)
@@ -299,8 +310,10 @@ while gameOn:
     warnings = location.getWarnings(wumpus, cave, player)
     if "PIT" in warnings:
         print("You feel a draft")
+        sound.playSound("pit")
     if "BAT" in warnings:
         print("You hear large wings flapping")
+        sound.playSound("bat1")
     if "WUMPUS" in warnings:
         print("You smell a wumpus")
     
