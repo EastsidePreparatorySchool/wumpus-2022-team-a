@@ -283,29 +283,9 @@ class Cave:
         # print("25 26 27 28 29 30")
 
 # cave = Cave()
-# # cave.genNewMap({2:'p', 13:'b', 22:'b'})
-# # cave.printSelf()
-# # cave.genNewMap({2:'p', 13:'b', 22:'b'})
-# # cave.printSelf()
-# # print(areAllAccessible(cave))
-
-# # path = "MapFiles/demofile.txt"
-# # cave.genNewMap([3, 26, 19])
-# # cave.saveMapFile(path)
-# # cave.printSelf()
-# # cave.loadPrevGame(path)
-# # cave.printSelf()
-
-# # path = "MapFiles/demofile.txt"
-# # cave.loadPrevGame(path)
-# # cave.printSelf()
-# # print(cave.getDist(0, 9))
 
 # from GameLocations import GameLocations
 # locations = GameLocations()
-# locations.spawnItems(None, cave, None)
-
+# locations.spawnItems()
 # cave.genNewMap(locations.getHazards())
-# print(locations.getHazards()) 
-# cave.printSelf()
-# # cave.printSelf()
+# cave.saveMapFile("MapFiles/demofile.txt")
