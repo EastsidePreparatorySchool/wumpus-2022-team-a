@@ -71,7 +71,7 @@ class Sound:
         self.playerHitSound.set_volume(volumes["SFX"])
 
         # Ambient sounds
-        self.pitSound.set_volume(volumes["Ambient"])
+        self.pitSound.set_volume(volumes["Ambient"] * 0.25)
         self.ambientSound1.set_volume(volumes["Ambient"])
         self.ambientSound2.set_volume(volumes["Ambient"])
         self.ambientSound3.set_volume(volumes["Ambient"])
@@ -88,4 +88,7 @@ class Sound:
 
 # pygame.init()
 # sound = Sound(True)
-# sound.playSound("amb1")
+# sound.playSound("pit")
+
+# from time import sleep
+# sleep(5)
