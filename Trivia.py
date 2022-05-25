@@ -106,7 +106,31 @@ class Trivia:
                 print(message)
             return False
     
-    def getSecret(self, locations, cave):
+    # generate a message to send based on distance from player to a hazard/wumpus
+    def getDistSecret(self, cave, locations, playerRoom, wumpRoom, type):
+        if type == "wumpus":
+            distance = cave.getDist(playerRoom, wumpRoom)
+            return "The wumpus is " + str(distance) + " caverns away from you."
+        elif type == "bat":
+            allRooms = locations.getHazards()
+            # get a list of two room numbers, which are the two that have a bat
+            batRooms = [index for index in range(len(allRooms)) if allRooms[index] == "BAT"]
+            # find which bat is closer to the player
+            firstDistance = cave.getDist(playerRoom, batRooms[0])
+            secondDistance = cave.getDist(playerRoom, batRooms[1])
+            distance = min(firstDistance, secondDistance)
+            return "The nearest super bat is " + str(distance) + " caverns away from you."
+        elif type == "pit":
+            allRooms = locations.getHazards()
+            # get a list of two room numbers, which are the two that have a pit
+            pitRooms = [index for index in range(len(allRooms)) if allRooms[index] == "PIT"]
+            # find which pit is closer to the player
+            firstDistance = cave.getDist(playerRoom, pitRooms[0])
+            secondDistance = cave.getDist(playerRoom, pitRooms[1])
+            distance = min(firstDistance, secondDistance)
+            return "The nearest bottomless pit is " + str(distance) + " caverns away from you."
+
+    def getSecret(self, locations, cave, playerRoom, wumpRoom):
         # call when player successfully buys a secret
         # pass gameLocations as argument
         # i think i'll need the cave to be passed so i can find how far away something is (in terms of how many turns it would take to get there) (this could be the same function as what's used for checking for warnings)
@@ -119,20 +143,14 @@ class Trivia:
         #   (3) a list of some trivia answers (without the question)
         #   (5) a partial map of the cave?
         # all of these next ones will be in terms of distance, not room number (they're arbitrary/incorrect room numbers now because it's easier, as a placeholder)
-        if random.random() < 0.2:
-            #secret = "A bottemless pit is in room " + str(locations.pit1)
-            secret = "A bottemless pit is in room 4"
-        elif random.random() < 0.2:
-            secret = "A bottomless pit is in room 4"
-        elif random.random() < 0.2:
-            secret = "A super bat is in room 4"
-        elif random.random() < 0.2:
-            secret = "A super bat is in room 4"
-        elif random.random() < 0.3:
-            secret = "The wumpus is in room 4"
+        if random.random() < 0.3:
+            secret = self.getDistSecret(cave, locations, playerRoom, wumpRoom, "bat")
+        elif random.random() < 0.5:
+            secret = self.getDistSecret(cave, locations, playerRoom, wumpRoom, "pit")
+        elif random.random() < 0.7:
+            secret = self.getDistSecret(cave, locations, playerRoom, wumpRoom, "wumpus")
         else:
             secret = "The wumpus likes warm colors"
-        print(secret)
         knownSecrets = open("TriviaFiles/KnownSecrets.txt", "a")
         # next line should be modified so you don't have an extra \n at end of file, maybe
         knownSecrets.write(secret + "\n")
@@ -143,23 +161,24 @@ class Trivia:
         # returns all known secrets from a file, as an array of strings
         # intention: player can look at a notebook to see all the secrets they've gleaned (maybe should include trivia they've been asked)
         knownSecrets = open("TriviaFiles/KnownSecrets.txt", "r")
-        secretsList = knownSecrets.read()
+        secrets = knownSecrets.read()
         knownSecrets.close()
-        print(secretsList)
-        return secretsList
+        # remove the trailing \n
+        secrets = secrets[:-1]
+        return secrets
     
 # temporary player object for testing (either the object or the class works)
-class Plr:
-    def __init__(self):
-        self.coins = 40
-PlayerObj = Plr()
+#class Plr:
+#    def __init__(self):
+#        self.coins = 40
+#PlayerObj = Plr()
 #class PlayerObj:
 #    coins = 12
 #print(PlayerObj.coins)
 #print(Trivia.challenge(2, 3, PlayerObj))
 #print(PlayerObj.coins)
 
-# Trv = Trivia()
-# Trv.challenge(3, 5, PlayerObj)
+#Trv = Trivia()
+#Trv.challenge(3, 5, PlayerObj)
 #Trv.getSecret(0, 0)
 #Trv.getKnownSecrets()
