@@ -5,7 +5,7 @@ class Player:
 
     def __init__(self):
         self.arrows = 3
-        self.coins = 0
+        self.coins = 2
         self.pos = 0
     
     def computeEndScore(self, wumpusState, turns):

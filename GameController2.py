@@ -28,6 +28,9 @@ Background = pygame.transform.scale(Background, (1280, 720))
 Caution = pygame.image.load(r'Images\Caution.png')
 Caution = pygame.transform.scale(Caution, (52, 56))
 
+Coin = pygame.image.load(r'Images\Koala.jpg')
+Coin = pygame.transform.scale(Coin, (50, 50))
+
 
 displayText = 'this is the display text'
 inputText = ''
@@ -84,7 +87,7 @@ displayImg = font.render("It begins in a deeeeep dark cavern", True, WHITE)
 displayImg2 = font.render("'Enter' to continue . . .", True, WHITE)
 # input("Press enter to begin! ")
 # playerName = input("What's your name? ")
-location.spawnItems(wumpus, cave, player)
+location.spawnItemsRandom()
 cave.loadPrevGame(r'MapFiles\demoFile.txt')
 # for diagnostic purposes
 print(location.getHazards())
@@ -96,6 +99,10 @@ print(location.getHazards())
 def PlayerMove():
 
     based = False
+
+    displayImg = font.render(hazardMessage, True, WHITE)
+    screen.blit(displayImg, displayRect)
+    pygame.display.update()
 
     while not based:
         move = getInput("Which way to go next????")
@@ -110,22 +117,43 @@ def PlayerMove():
     
 def ShootArrow():
     global gameOn
+
+    hazardMessage = str(cave.getConnections(player.pos))
+    displayImg = font.render(hazardMessage, True, WHITE)
+    screen.blit(displayImg, displayRect)
+    pygame.display.update()
+    
     direction = getInput("which room to shoot arrow at????")
     sound.playSound("shoot")
     while int(direction) not in cave.getConnections(player.pos):
        direction = getInput("Not a valid response. Enter the number room you want to shoot into.")
        sound.playSound("shoot")
     if location.shootArrow(int(direction), wumpus, cave, player):
-        print("you killed the wumpus!")
+
+        displayImg = font.render("YOU KILLED THE WUMPUS!!", True, WHITE)
+        screen.blit(displayImg, displayRect)
+        pygame.display.update()
         sound.playSound("arrHit")
         wumpus.changeToDead()
+
+        print("hit something")
+
         gameOn = False
     else:
-        print("missed arrow")
+        displayImg = font.render("You missed :(", True, WHITE)
+        screen.blit(displayImg, displayRect)
+        pygame.display.update()
+
+        print("missed")
         #wumpus.changeToAwake()  this is done in GameLocations.shootArrow
     if player.arrows == 0:
-        print("wumpus senses that you're out of arrows and eats you")
+        displayImg = font.render("The Wumpus senses you're out of arrows and eats u lmaooo", True, WHITE)
+        screen.blit(displayImg, displayRect)
+        pygame.display.update()
+
         gameOn = False
+
+        print("out of arrows")
 
 def FightWumpus():
     global gameOn
@@ -165,45 +193,61 @@ def FallIntoPit():
         print("you plunge into darkness. game over")
         sound.playSound("amb1")
 
-def getInput(question):
-    inputText = ""
-    inputImg = font.render(inputText, True, WHITE)
-    displayImg2 = font.render(question, True, WHITE)
+# def getInput(question):
+#     inputText = ""
+#     inputImg = font.render(inputText, True, WHITE)
+#     displayImg2 = font.render(question, True, WHITE)
 
-    playerInput = ""
-    playerAnswered = False
+#     playerInput = ""
+#     playerAnswered = False
 
-    while not playerAnswered:
 
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                pygame.display.quit()
-                exit()
+#     while not playerAnswered:
 
-            if event.type == KEYDOWN:
+#         for event in pygame.event.get():
+#             if event.type == QUIT:
+#                 pygame.display.quit()
+#                 exit()
 
-                if event.key == K_RETURN:
+#             if event.type == KEYDOWN:
+
+#                 if event.key == K_RETURN:
                     
-                    playerInput = inputText
-                    inputText = ""
+#                     playerInput = inputText
+#                     inputText = ""
 
-                    playerAnswered = True
+#                     playerAnswered = True
                     
                 
-                if event.key == K_BACKSPACE:
-                    if len(inputText)>0:
-                        inputText = inputText[:-1]
-                elif event.key != K_RETURN:
-                    inputText += event.unicode
+#                 if event.key == K_BACKSPACE:
+#                     if len(inputText)>0:
+#                         inputText = inputText[:-1]
+#                 elif event.key != K_RETURN:
+#                     inputText += event.unicode
 
-                inputImg = font.render(inputText, True, WHITE)
+#                 inputImg = font.render(inputText, True, WHITE)
                 
-                inputRect.size=inputImg.get_size()
-                cursor.topleft = inputRect.topright
+#                 inputRect.size=inputImg.get_size()
+#                 cursor.topleft = inputRect.topright
 
+        
 
         screen.fill(background)
-        screen.blit(Caution, (900, 550))
+
+        if "WUMPUS" in location.getWarnings(wumpus, cave, player):
+            screen.blit(Caution, (900, 550))
+
+        #Coin manager
+        if(player.coins > 0):
+            screen.blit(Coin, (50, 50))
+
+            if(player.coins > 1):
+                screen.blit(Coin, (120, 50))
+
+                if(player.coins > 2):
+                    screen.blit(Coin, (190, 50))
+
+
         screen.blit(inputImg, inputRect)
         screen.blit(displayImg, displayRect)
         screen.blit(displayImg2, displayRect2)
@@ -248,6 +292,7 @@ while gameOn:
     screen.fill(background)
     screen.blit(Caution, (900, 550))
 
+
     for event in pygame.event.get():
         if event.type == QUIT:
             gameOn = False
@@ -266,7 +311,7 @@ while gameOn:
     hazardMessage = str(cave.getConnections(player.pos))
     hazards = location.checkHazards(player.pos, wumpus, cave, player)
 
-    displayImg = font.render(hazardMessage, True, WHITE)
+    #displayImg = font.render(hazardMessage, True, WHITE)
 
     answer = getInput("move OR shoot OR buy arrow")
 
@@ -318,14 +363,16 @@ while gameOn:
         print("You smell a wumpus")
     
 
+
+
     # actionChoice = input("shoot or move or buy arrow?")
     displayImg2 = displayImg2 = font.render("'shoot OR move OR buy arrow", True, WHITE)
     
 
-    if answer == "shoot":
+    if answer == "shoot":  
         ShootArrow()
 
-    elif answer == "move":   
+    elif answer == "move":  
         PlayerMove()
 
     elif answer == "buy arrow":
@@ -350,3 +397,54 @@ try:
     print(highScores.getHighScores())
 except:
     print("gameOn is false. error involving high score (line 36, in addHighScore)")
+
+
+
+
+class IO:
+    def getInput(question):
+        inputText = ""
+        inputImg = font.render(inputText, True, WHITE)
+        displayImg2 = font.render(question, True, WHITE)
+
+        playerInput = ""
+        playerAnswered = False
+
+
+        while not playerAnswered:
+
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    pygame.display.quit()
+                    exit()
+
+                if event.type == KEYDOWN:
+
+                    if event.key == K_RETURN:
+                        
+                        playerInput = inputText
+                        inputText = ""
+
+                        playerAnswered = True
+                        
+                    
+                    if event.key == K_BACKSPACE:
+                        if len(inputText)>0:
+                            inputText = inputText[:-1]
+                    elif event.key != K_RETURN:
+                        inputText += event.unicode
+
+                    inputImg = font.render(inputText, True, WHITE)
+                    
+                    inputRect.size=inputImg.get_size()
+                    cursor.topleft = inputRect.topright
+        screen.blit(inputImg, inputRect)
+        screen.blit(displayImg, displayRect)
+        screen.blit(displayImg2, displayRect2)
+    def print(text):
+
+        displayImg2 = font.render(text, True, WHITE)
+        screen.blit(displayImg2, displayRect2)
+
+        
+        
