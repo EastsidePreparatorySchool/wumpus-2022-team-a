@@ -178,6 +178,15 @@ def BuyArrow():
     else:
         print("failed to get an arrow")
 
+def BuySecret():
+    print("you attempt to purchase a secret")
+    if trivia.challenge(2, 3, player):
+        player.arrows += 1
+        print("here is your secret:")
+        print(trivia.getSecret())
+    else:
+        print("failed to get a secret")
+
 def GetMovedByBat():
     print("a bat sweeps you away")
     sound.playSound("bat2")
