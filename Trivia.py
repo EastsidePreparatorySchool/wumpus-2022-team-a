@@ -1,5 +1,5 @@
 import random
-from GameController2 import IO
+
 
 class Trivia:
     UsedTrivia = []

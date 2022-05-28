@@ -41,13 +41,16 @@ font = pygame.font.SysFont(None, 32)
 
 displayImg = font.render(displayText, True, WHITE)
 displayImg2 = font.render(displayText, True, WHITE)
+connectionsImg = font.render(displayText, True, WHITE)
 inputImg = font.render(inputText, True, WHITE)
 
 
 displayRect = displayImg.get_rect()
 displayRect2 = displayImg.get_rect()
+displayRect3 = displayImg.get_rect()
 displayRect.topleft = (20, 420)
 displayRect2.topleft = (20, 450)
+displayRect3.topleft = (20, 390)
 
 inputRect = inputImg.get_rect()
 inputRect.topleft = (20, 530)
@@ -94,7 +97,15 @@ print(location.getHazards())
 # cave.printSelf()
 
 
-
+def drawFrame():
+    screen.fill(background)
+    screen.blit(connectionsImg, displayRect3)
+    screen.blit(inputImg, inputRect)
+    screen.blit(displayImg, displayRect)
+    screen.blit(displayImg2, displayRect2)
+    if time.time() % 1 > 0.5:
+        pygame.draw.rect(screen, WHITE, cursor)
+    pygame.display.update()
 
 def PlayerMove():
 
@@ -118,10 +129,7 @@ def PlayerMove():
 def ShootArrow():
     global gameOn
 
-    hazardMessage = str(cave.getConnections(player.pos))
-    displayImg = font.render(hazardMessage, True, WHITE)
-    screen.blit(displayImg, displayRect)
-    pygame.display.update()
+
     
     direction = getInput("which room to shoot arrow at????")
     sound.playSound("shoot")
@@ -202,46 +210,46 @@ def FallIntoPit():
         print("you plunge into darkness. game over")
         sound.playSound("amb1")
 
-# def getInput(question):
-#     inputText = ""
-#     inputImg = font.render(inputText, True, WHITE)
-#     displayImg2 = font.render(question, True, WHITE)
+def getInput(question):
+    inputText = ""
+    inputImg = font.render(inputText, True, WHITE)
+    displayImg2 = font.render(question, True, WHITE)
 
-#     playerInput = ""
-#     playerAnswered = False
+    playerInput = ""
+    playerAnswered = False
 
 
-#     while not playerAnswered:
+    while not playerAnswered:
 
-#         for event in pygame.event.get():
-#             if event.type == QUIT:
-#                 pygame.display.quit()
-#                 exit()
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.display.quit()
+                exit()
 
-#             if event.type == KEYDOWN:
+            if event.type == KEYDOWN:
 
-#                 if event.key == K_RETURN:
+                if event.key == K_RETURN:
                     
-#                     playerInput = inputText
-#                     inputText = ""
+                    playerInput = inputText
+                    inputText = ""
 
-#                     playerAnswered = True
+                    playerAnswered = True
                     
                 
-#                 if event.key == K_BACKSPACE:
-#                     if len(inputText)>0:
-#                         inputText = inputText[:-1]
-#                 elif event.key != K_RETURN:
-#                     inputText += event.unicode
+                if event.key == K_BACKSPACE:
+                    if len(inputText)>0:
+                        inputText = inputText[:-1]
+                elif event.key != K_RETURN:
+                    inputText += event.unicode
 
-#                 inputImg = font.render(inputText, True, WHITE)
+                inputImg = font.render(inputText, True, WHITE)
                 
-#                 inputRect.size=inputImg.get_size()
-#                 cursor.topleft = inputRect.topright
+                inputRect.size=inputImg.get_size()
+                cursor.topleft = inputRect.topright
 
         
 
-        screen.fill(background)
+        
 
         if "WUMPUS" in location.getWarnings(wumpus, cave, player):
             screen.blit(Caution, (900, 550))
@@ -256,13 +264,20 @@ def FallIntoPit():
                 if(player.coins > 2):
                     screen.blit(Coin, (190, 50))
 
+        # screen.fill(background)
+        hazardMessage = str(cave.getConnections(player.pos))
+        connectionsImg = font.render(hazardMessage, True, WHITE)
+        # screen.blit(connectionsImg, displayRect3)
+        
 
-        screen.blit(inputImg, inputRect)
-        screen.blit(displayImg, displayRect)
-        screen.blit(displayImg2, displayRect2)
-        if time.time() % 1 > 0.5:
-            pygame.draw.rect(screen, WHITE, cursor)
-        pygame.display.update()
+        # screen.blit(inputImg, inputRect)
+        # screen.blit(displayImg, displayRect)
+        # screen.blit(displayImg2, displayRect2)
+        # if time.time() % 1 > 0.5:
+        #     pygame.draw.rect(screen, WHITE, cursor)
+        # pygame.display.update()
+
+        drawFrame()
 
     return playerInput
 
@@ -410,50 +425,7 @@ except:
 
 
 
-class IO:
-    def getInput(question):
-        inputText = ""
-        inputImg = font.render(inputText, True, WHITE)
-        displayImg2 = font.render(question, True, WHITE)
-
-        playerInput = ""
-        playerAnswered = False
+# class IO:
 
 
-        while not playerAnswered:
-
-            for event in pygame.event.get():
-                if event.type == QUIT:
-                    pygame.display.quit()
-                    exit()
-
-                if event.type == KEYDOWN:
-
-                    if event.key == K_RETURN:
-                        
-                        playerInput = inputText
-                        inputText = ""
-
-                        playerAnswered = True
-                        
-                    
-                    if event.key == K_BACKSPACE:
-                        if len(inputText)>0:
-                            inputText = inputText[:-1]
-                    elif event.key != K_RETURN:
-                        inputText += event.unicode
-
-                    inputImg = font.render(inputText, True, WHITE)
-                    
-                    inputRect.size=inputImg.get_size()
-                    cursor.topleft = inputRect.topright
-        screen.blit(inputImg, inputRect)
-        screen.blit(displayImg, displayRect)
-        screen.blit(displayImg2, displayRect2)
-    def print(text):
-
-        displayImg2 = font.render(text, True, WHITE)
-        screen.blit(displayImg2, displayRect2)
-
-        
         
