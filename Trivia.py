@@ -1,12 +1,17 @@
 import random
 
-
 class Trivia:
     UsedTrivia = []
 
     def __init__(self):
         self.newGame()
     
+
+    def TriviaText():
+
+        IO.displayText = "dfdskalfjdsklajfkldsa"
+        IO.drawFrame()
+
     def newGame(self):
         # call at some point during the process of a game starting? might not be necessary
         # eventually UsedTrivia should be stored in a file when the game is closed (if there's a run in progress), and there should be a Trivia.loadGame() function that reads that file
