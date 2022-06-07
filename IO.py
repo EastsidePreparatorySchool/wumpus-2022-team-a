@@ -13,13 +13,29 @@ loc2 = (480, 500)
 loc3 = (480, 550)
 MenuePos = 0
 screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+shownWarnings = []
+
 MenueBackground = pygame.image.load(r'Images\MainScreen.png')
 MenueBackground = pygame.transform.scale(MenueBackground, (1280, 720))
+
 Cursor = pygame.image.load(r'Images\Cursor.png')
 Cursor = pygame.transform.scale(Cursor, (40, 30))
-Coin = pygame.image.load(r'Images\Koala.jpg')
+
+Coin = pygame.image.load(r'Images\Coin.png')
 Coin = pygame.transform.scale(Coin, (50, 50))
+
+Arrow = pygame.image.load(r'Images\Arrow.png')
+Arrow = pygame.transform.scale(Arrow, (50, 50))
+
+Caution = pygame.image.load(r'Images\Caution.png')
+Caution = pygame.transform.scale(Caution, (23, 24))
+
+CautionUnlit = pygame.image.load(r'Images\CautionUnlit.png')
+CautionUnlit = pygame.transform.scale(CautionUnlit, (23, 24))
+
+
 font = pygame.font.SysFont(None, 32)
+
 background = BLACK
 player = MainObjects.player
 cave = MainObjects.cave
@@ -28,6 +44,7 @@ connectionsText = ""
 displayText = ""
 displayText2 = ""
 inputText = ""
+
 
 
 def drawMenueFrame():
@@ -44,13 +61,18 @@ def drawMenueFrame():
     pygame.display.update() 
 
 
-
-def drawFrame():
+# you can leave the warnings parameter blank if you want the displayed warnings to continue to
+# be whatever you last set them to
+def drawFrame(warnings=shownWarnings):
 
     displayImg = font.render(displayText, True, WHITE)
     displayImg2 = font.render(displayText2, True, WHITE)
     connectionsImg = font.render(connectionsText, True, WHITE)
     inputImg = font.render(inputText, True, WHITE)
+
+    WumpusImg = font.render("Wumpus", True, WHITE)
+    PitsImg = font.render("Pits", True, WHITE)
+    BatsImg = font.render("Bats", True, WHITE)
 
     displayRect = displayImg.get_rect()
     displayRect2 = displayImg.get_rect()
@@ -68,21 +90,37 @@ def drawFrame():
     screen.blit(displayImg, displayRect)
     screen.blit(displayImg2, displayRect2)
 
-    #Coin manager
-    if(player.coins > 0):
-        screen.blit(Coin, (50, 50))
+    global shownWarnings
+    shownWarnings = warnings
 
-        if(player.coins > 1):
-            screen.blit(Coin, (120, 50))
+    if "WUMPUS" in warnings:
+        screen.blit(Caution, (900, 500))
+        screen.blit(WumpusImg, (950, 500))
+    else:
+        screen.blit(CautionUnlit, (900, 500))
+        screen.blit(WumpusImg, (950, 500))
+    if "PIT" in warnings:
+        screen.blit(Caution, (900, 550))
+        screen.blit(PitsImg, (950, 550))
+    else:
+        screen.blit(CautionUnlit, (900, 550))
+        screen.blit(PitsImg, (950, 550))
+    if "BAT" in warnings:
+        screen.blit(Caution, (900, 600))
+        screen.blit(BatsImg, (950, 600))
+    else:
+        screen.blit(CautionUnlit, (900, 600))
+        screen.blit(BatsImg, (950, 600))
+    
+    
 
-            if(player.coins > 2):
-                screen.blit(Coin, (190, 50))
+    
 
-                if(player.coins > 3):
-                    screen.blit(Coin, (260, 50))
+    for n in range(player.coinsNow):
+        screen.blit(Coin, (60 + 70*n, 50))
 
-                    if(player.coins > 4):
-                        screen.blit(Coin, (330, 50))
+    for n in range(player.arrows):
+        screen.blit(Arrow, (1160 - 70*n, 50))
 
     inputRect.size=inputImg.get_size()
     cursor.topleft = inputRect.topright
@@ -92,7 +130,11 @@ def drawFrame():
     pygame.display.update()
 
 # prompt user for text input
-def getInput(question):
+def getInput(question, warnings=shownWarnings):
+
+    global shownWarnings
+    shownWarnings = warnings
+
     global displayText2
     global connectionsText
     global inputText
@@ -103,7 +145,7 @@ def getInput(question):
     inputText = ""
     connectionsText = str(cave.getConnections(player.pos))
 
-    drawFrame()
+    drawFrame(warnings)
 
     while not answered:
 
@@ -123,7 +165,7 @@ def getInput(question):
                 else:
                     inputText += event.unicode
 
-        drawFrame()
+        drawFrame(warnings)
 
 # displays a two-line message on the game screen
 def write(messageLine1, messageLine2=""):

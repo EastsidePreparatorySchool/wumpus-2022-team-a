@@ -69,14 +69,11 @@ cursor = Rect(inputRect.topright, (3, inputRect.height))
 print("Game initialized")
 
 
-
-
-
 # input("Press enter to begin! ")
 # playerName = input("What's your name? ")
 # location.spawnItemsRandom()
 location.spawnItemsCustom(wumpus, 11) # Spawn wumpus at 5
-cave.loadPrevGame(r'MapFiles\demoFile.txt')
+# cave.loadPrevGame(r'MapFiles\demoFile.txt')
 # for diagnostic purposes
 print(location.getHazards())
 # cave.printSelf()
@@ -95,7 +92,9 @@ def Move():
 
         if int(move) in cave.getConnections(player.pos):
             player.pos = int(move)
-            player.coins += 1
+            if player.coinsAll < 100:
+                player.coinsAll += 1
+                player.coinsNow += 1
             sound.playSound("coin")
             IO.write("Moved into " + move)
             based = True
@@ -202,8 +201,11 @@ def checkGameQuit():
     # true if they're not closing window
     return True
 
+def giveWarnings():
+    return location.getWarnings()
 
 isContinued = False
+loadPreset = False
 while isContinued == False:
 
 
@@ -227,16 +229,14 @@ while isContinued == False:
             
             if event.key == K_RETURN:
 
-                if IO.MenuePos%3 is 0:
+                loadPreset = (IO.MenuePos%3 == 1)
 
+                if IO.MenuePos%3 == 0:
                     print("game started")
-
                     isContinued = True
-                
-                if IO.MenuePos%3 is 2:
 
+                if IO.MenuePos%3 == 2:
                     pygame.quit()
-
                     quit()
 
         
@@ -246,7 +246,16 @@ while isContinued == False:
 
 #displayImg = font.render("It begins in a deeeeep dark cavern", True, WHITE)
 #displayImg2 = font.render("'Enter' to continue . . .", True, WHITE)
+playerName = IO.getInput("Enter player name:")
+
+if loadPreset:
+    mapNum = IO.getInput("Enter preset map number:")
+    cave.loadPresetMap(mapNum)
+else:
+    cave.genNewMap(location.getHazards())
+
 IO.getInput("You find yourself in a deep, dark cavern. Press Enter to continue...")
+
 
 turnNum = True # why is this a boolean instead of a number?
 gameOn = True
@@ -293,11 +302,12 @@ while gameOn:
     
 
     # this should probably be moved to after hazards are checked
-    turnType = IO.getInput("move OR shoot OR buy arrow OR buy secret")
+    print(location.getWarnings())
+    turnType = IO.getInput("move OR shoot OR buy arrow OR buy secret", location.getWarnings())
 
     #IO.write("Player position:" + str(player.pos))
     IO.write("Nearby rooms: " + str(cave.getConnections(player.pos)))
-    warnings = location.getWarnings(wumpus, cave, player)
+    warnings = location.getWarnings()
     if "PIT" in warnings:
         IO.write("You feel a draft")
         sound.playSound("pit")
@@ -319,7 +329,7 @@ while gameOn:
     elif turnType == "buy secret":
         BuySecret()
 
-
+    warnings = location.getWarnings()
     IO.drawFrame()
     turnNum += 1
 
@@ -330,8 +340,13 @@ while gameOn:
 print("game over")
 
 score = player.computeEndScore(wumpus.getWumpState(), turnNum)
+print("your score is " + str(score))
+highScores.addHighScore("player1", score)
 highScoresList = highScores.getHighScores()
+highScores.addHighScore(playerName, score)
 highScores.writeHighScores()
+
+#NEED TO SEND THIS TO PYGAME WINDOW
 print(highScoresList)
 
 # keep window running until player closes it

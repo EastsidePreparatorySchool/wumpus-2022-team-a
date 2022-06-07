@@ -30,8 +30,8 @@ class Trivia:
         correct = 0
         attempts = 0
         for i in range(int(maxAttempts)):
-            if player.coins > 0:
-                player.coins -= 1
+            if player.coinsNow > 0:
+                player.coinsNow -= 1
             else:
                 IO.write("no coins, can't answer trivia")
                 return False

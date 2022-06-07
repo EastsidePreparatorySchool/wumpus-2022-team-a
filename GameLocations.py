@@ -1,4 +1,5 @@
 import random
+import MainObjects
 
 # from GameController2 import GameController2
 # from Cave import Cave
@@ -126,14 +127,17 @@ class GameLocations:
         return False
 
     # Called by GameControl
-    def getWarnings(self, wumpus, cave, player):
+    def getWarnings(self):
         hazards = self.getHazards()
+        wumpus = MainObjects.wumpus
+        cave = MainObjects.cave
+        player = MainObjects.player
 
-        # possibleCaves = cave.getConnections(player.pos)
-        possibleCaves = []
-        for currCave in range(30):
-            if 0 < cave.getDist(currCave, player.pos) <= 2:
-                possibleCaves.append(currCave)
+        possibleCaves = cave.getConnections(player.pos)
+        # possibleCaves = []
+        # for currCave in range(30):
+        #     if 0 < cave.getDist(currCave, player.pos) <= 2:
+        #         possibleCaves.append(currCave)
 
         possibleHazards = []
         for currCave in possibleCaves:
