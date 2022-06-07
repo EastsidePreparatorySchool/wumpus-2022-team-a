@@ -330,8 +330,12 @@ while gameOn:
 print("game over")
 
 score = player.computeEndScore(wumpus.getWumpState(), turnNum)
+print("your score is " + str(score))
+highScores.addHighScore("player1", score)
 highScoresList = highScores.getHighScores()
 highScores.writeHighScores()
+
+#NEED TO SEND THIS TO PYGAME WINDOW
 print(highScoresList)
 
 # keep window running until player closes it

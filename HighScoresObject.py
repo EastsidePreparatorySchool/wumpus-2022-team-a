@@ -23,9 +23,11 @@ class HighScores:
         count = 1
         for x in sorted(self.scoresDict, key=self.scoresDict.get, reverse=True): 
             if count < 11:
-                # print(str(count) + ". ", x, " -- ", self.scoresDict[x])
-                highScoresList[count - 1] = str(count) + ". ", x, " -- ", self.scoresDict[x]
+                #print(str(count) + ". ", x, " -- ", self.scoresDict[x])
+                highScoresList.append(str(str(count) + ". " + x + " -- " + str(self.scoresDict[x]))) 
                 count += 1
+                #highScoresList[count - 1] = str(count) + ". ", x, " -- ", self.scoresDict[x]
+                #count += 1
                 #print(x, " -- ", self.scoresDict[x])
             # get rid of any names and values that weren't in the top 10 scores
             else: 
