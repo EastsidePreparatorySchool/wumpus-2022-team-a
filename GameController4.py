@@ -247,7 +247,11 @@ while isContinued == False:
 
 #displayImg = font.render("It begins in a deeeeep dark cavern", True, WHITE)
 #displayImg2 = font.render("'Enter' to continue . . .", True, WHITE)
+playerName = IO.getInput("Enter player name:")
+
+
 IO.getInput("You find yourself in a deep, dark cavern. Press Enter to continue...")
+
 
 turnNum = True # why is this a boolean instead of a number?
 gameOn = True
@@ -335,6 +339,7 @@ score = player.computeEndScore(wumpus.getWumpState(), turnNum)
 print("your score is " + str(score))
 highScores.addHighScore("player1", score)
 highScoresList = highScores.getHighScores()
+highScores.addHighScore(playerName, score)
 highScores.writeHighScores()
 
 #NEED TO SEND THIS TO PYGAME WINDOW
