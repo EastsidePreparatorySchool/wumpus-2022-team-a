@@ -230,7 +230,7 @@ class Cave:
         pprint.pprint(self.adjacencyList)
         pprint.pprint(self.connectionList)
 
-cave = Cave()
+# cave = Cave()
 
-cave.loadPresetMap(10)
-cave.printSelf()
+# cave.loadPresetMap(10)
+# cave.printSelf()

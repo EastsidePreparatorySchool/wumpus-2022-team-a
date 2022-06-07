@@ -73,7 +73,7 @@ print("Game initialized")
 # playerName = input("What's your name? ")
 # location.spawnItemsRandom()
 location.spawnItemsCustom(wumpus, 11) # Spawn wumpus at 5
-cave.loadPrevGame(r'MapFiles\demoFile.txt')
+# cave.loadPrevGame(r'MapFiles\demoFile.txt')
 # for diagnostic purposes
 print(location.getHazards())
 # cave.printSelf()
@@ -205,6 +205,7 @@ def giveWarnings():
     return location.getWarnings(wumpus, cave, player)
 
 isContinued = False
+loadPreset = False
 while isContinued == False:
 
 
@@ -228,16 +229,14 @@ while isContinued == False:
             
             if event.key == K_RETURN:
 
+                loadPreset = (IO.MenuePos%3 == 1)
+
                 if IO.MenuePos%3 == 0:
-
                     print("game started")
-
                     isContinued = True
-                
+
                 if IO.MenuePos%3 == 2:
-
                     pygame.quit()
-
                     quit()
 
         
@@ -249,6 +248,11 @@ while isContinued == False:
 #displayImg2 = font.render("'Enter' to continue . . .", True, WHITE)
 playerName = IO.getInput("Enter player name:")
 
+if loadPreset:
+    mapNum = IO.getInput("Enter preset map number:")
+    cave.loadPresetMap(mapNum)
+else:
+    cave.genNewMap(location.getHazards())
 
 IO.getInput("You find yourself in a deep, dark cavern. Press Enter to continue...")
 
