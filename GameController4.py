@@ -201,6 +201,8 @@ def checkGameQuit():
     # true if they're not closing window
     return True
 
+def giveWarnings():
+    return location.getWarnings(wumpus, cave, player)
 
 isContinued = False
 while isContinued == False:
@@ -226,13 +228,13 @@ while isContinued == False:
             
             if event.key == K_RETURN:
 
-                if IO.MenuePos%3 is 0:
+                if IO.MenuePos%3 == 0:
 
                     print("game started")
 
                     isContinued = True
                 
-                if IO.MenuePos%3 is 2:
+                if IO.MenuePos%3 == 2:
 
                     pygame.quit()
 
@@ -292,7 +294,8 @@ while gameOn:
     
 
     # this should probably be moved to after hazards are checked
-    turnType = IO.getInput("move OR shoot OR buy arrow OR buy secret")
+    print(location.getWarnings(wumpus, cave, player))
+    turnType = IO.getInput("move OR shoot OR buy arrow OR buy secret", location.getWarnings(wumpus, cave, player))
 
     #IO.write("Player position:" + str(player.pos))
     IO.write("Nearby rooms: " + str(cave.getConnections(player.pos)))
@@ -318,7 +321,7 @@ while gameOn:
     elif turnType == "buy secret":
         BuySecret()
 
-
+    warnings = location.getWarnings(wumpus, cave, player)
     IO.drawFrame()
     turnNum += 1
 
