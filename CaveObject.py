@@ -227,6 +227,6 @@ class Cave:
 
 # from GameLocations import GameLocations
 # locations = GameLocations()
-# locations.spawnItems()
+# locations.spawnItemsRandom()
 # cave.genNewMap(locations.getHazards())
 # cave.saveMapFile("MapFiles/demofile.txt")
