@@ -1,4 +1,7 @@
 import random
+import math
+import IO
+import MainObjects
 
 class Trivia:
     UsedTrivia = []
@@ -6,12 +9,6 @@ class Trivia:
     def __init__(self):
         self.newGame()
     
-
-    def TriviaText():
-
-        IO.displayText = "dfdskalfjdsklajfkldsa"
-        IO.drawFrame()
-
     def newGame(self):
         # call at some point during the process of a game starting? might not be necessary
         # eventually UsedTrivia should be stored in a file when the game is closed (if there's a run in progress), and there should be a Trivia.loadGame() function that reads that file
@@ -20,12 +17,15 @@ class Trivia:
         knownSecrets.write("")
         knownSecrets.close()
 
-    def challenge(self, needCorrect, maxAttempts, player):
+    def challenge(self, needCorrect, maxAttempts):
         # call when player action prompts a trivia battle (buying a secret, fighting the wumpus, buying arrows, etc.)
         # needCorrect and maxAttempts can be int or str
         # player is the object
         # returns True on success, False on failure (and 1 on death by bankruptcy?) (maybe change to 1, 0, 2?)
-        print("the player has " + str(maxAttempts) + " tries to get " + str(needCorrect) + " questions right")
+        
+        player = MainObjects.player
+        
+        IO.write("the player has " + str(maxAttempts) + " tries to get " + str(needCorrect) + " questions right")
 
         correct = 0
         attempts = 0
@@ -33,7 +33,7 @@ class Trivia:
             if player.coins > 0:
                 player.coins -= 1
             else:
-                print("no coins, can't answer trivia")
+                IO.write("no coins, can't answer trivia")
                 return False
             if (self.askQuestion()):
                 correct += 1
@@ -62,7 +62,7 @@ class Trivia:
             questionNum += 1
         
         if numUnusedTrivia == 0:
-            print("all trivia questions have been used")
+            IO.write("all trivia questions have been used")
 
         # choose a random unused trivia question
         chosenQNum = random.randrange(0, numUnusedTrivia)
@@ -88,33 +88,40 @@ class Trivia:
             random.shuffle(choices)
             questionText += "Choices:\n"
             for choice in choices:
-                questionText += '\t' + choice[1:] + '\n'
+                #questionText += '\t' + choice[1:] + '\n'  escape characters dont work in pygame output
+                questionText += choice[1:] + "   "
                 if choice[0] == 'c':
                     correctAnswers.append(choice[1:])
             choices = [choice[1:] for choice in choices] # remove leading c/w
         while True:
-            playerAnswer = input(questionText)
+            playerAnswer = IO.getInput(questionText)
             if isWritten or playerAnswer in choices:
                 break
-            print(playerAnswer + " is invalid. Type one of the given choices.")
+            IO.write(playerAnswer + " is invalid. Type one of the given choices.")
         
         if str(playerAnswer).lower() in correctAnswers:
-            print("Correct!")
+            IO.write("Correct!")
             return True
         else:
-            #print("Sorry! The correct answer was " + allTrivia[chosenQNum * 2 + 1][:-1] + ".")
             if len(correctAnswers) == 1:
-                print("Sorry! The correct answer was: " + correctAnswers[0])
+                IO.write("Sorry! The correct answer was: " + correctAnswers[0])
             else:
                 message = "Sorry! The acceptible answers were: "
                 for answer in correctAnswers:
                     message += "\n\t" + answer
-                print(message)
+                IO.write(message)
             return False
     
     # generate a message to send based on distance from player to a hazard/wumpus
-    def getDistSecret(self, cave, locations, playerRoom, wumpRoom, type):
+    def getDistSecret(self, type):
+        player = MainObjects.player
+        cave = MainObjects.cave
+        wumpus = MainObjects.wumpus
+        locations = MainObjects.location
+
+        playerRoom = player.pos
         if type == "wumpus":
+            wumpRoom = wumpus.wumpPos
             distance = cave.getDist(playerRoom, wumpRoom)
             return "The wumpus is " + str(distance) + " caverns away from you."
         elif type == "bat":
@@ -136,7 +143,7 @@ class Trivia:
             distance = min(firstDistance, secondDistance)
             return "The nearest bottomless pit is " + str(distance) + " caverns away from you."
 
-    def getSecret(self, locations, cave, playerRoom, wumpRoom):
+    def getSecret(self):
         # call when player successfully buys a secret
         # pass gameLocations as argument
         # i think i'll need the cave to be passed so i can find how far away something is (in terms of how many turns it would take to get there) (this could be the same function as what's used for checking for warnings)
@@ -149,12 +156,13 @@ class Trivia:
         #   (3) a list of some trivia answers (without the question)
         #   (5) a partial map of the cave?
         # all of these next ones will be in terms of distance, not room number (they're arbitrary/incorrect room numbers now because it's easier, as a placeholder)
-        if random.random() < 0.3:
-            secret = self.getDistSecret(cave, locations, playerRoom, wumpRoom, "bat")
-        elif random.random() < 0.5:
-            secret = self.getDistSecret(cave, locations, playerRoom, wumpRoom, "pit")
-        elif random.random() < 0.7:
-            secret = self.getDistSecret(cave, locations, playerRoom, wumpRoom, "wumpus")
+        choice = math.floor(random.random()*4)
+        if choice == 0:
+            secret = self.getDistSecret("bat")
+        elif choice == 1:
+            secret = self.getDistSecret("pit")
+        elif choice == 2:
+            secret = self.getDistSecret("wumpus")
         else:
             secret = "The wumpus likes warm colors"
         knownSecrets = open("TriviaFiles/KnownSecrets.txt", "a")
@@ -172,19 +180,3 @@ class Trivia:
         # remove the trailing \n
         secrets = secrets[:-1]
         return secrets
-    
-# temporary player object for testing (either the object or the class works)
-#class Plr:
-#    def __init__(self):
-#        self.coins = 40
-#PlayerObj = Plr()
-#class PlayerObj:
-#    coins = 12
-#print(PlayerObj.coins)
-#print(Trivia.challenge(2, 3, PlayerObj))
-#print(PlayerObj.coins)
-
-#Trv = Trivia()
-#Trv.challenge(3, 5, PlayerObj)
-#Trv.getSecret(0, 0)
-#Trv.getKnownSecrets()
