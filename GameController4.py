@@ -280,10 +280,17 @@ while gameOn:
     IO.drawFrame()
     turnNum += 1
 
+
 # TODO tell player their score, note both displays might already be in use so maybe wait
 # before doing this
 
 print("game over")
+
+score = player.computeEndScore(wumpus.getWumpState(), turnNum)
+highScoresList = highScores.getHighScores()
+highScores.writeHighScores()
+print(highScoresList)
+
 # keep window running until player closes it
 while True:
     if not checkGameQuit():

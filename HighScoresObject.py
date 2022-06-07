@@ -14,19 +14,24 @@ class HighScores:
     def getPlayerScore(self, playerName):
         return self.scoresDict.get(playerName, -1)
 
-    # print all current high scores (can make this look nicer later)
-    def printHighScores(self): 
-        print(self.scoresDict)
-        print("Current top scores: ")
+    # return all the high scores as a list of strings
+    # each string is one high score (name, score)
+    def getHighScores(self): 
+        # print(self.scoresDict)
+        # print("Current top scores: ")
+        highScoresList = []
         count = 1
         for x in sorted(self.scoresDict, key=self.scoresDict.get, reverse=True): 
             if count < 11:
-                print(str(count) + ". ", x, " -- ", self.scoresDict[x])
+                # print(str(count) + ". ", x, " -- ", self.scoresDict[x])
+                highScoresList[count - 1] = str(count) + ". ", x, " -- ", self.scoresDict[x]
+                count += 1
                 #print(x, " -- ", self.scoresDict[x])
             # get rid of any names and values that weren't in the top 10 scores
             else: 
                 self.scoresDict.pop(x)
             count += 1
+        return highScoresList
     
     # add a high score to the dictionary
     def addHighScore(self, userName, userScore): 
