@@ -228,7 +228,7 @@ while isContinued == False:
 
                 loadPreset = (IO.MenuePos%3 == 1)
 
-                if IO.MenuePos%3 == 0:
+                if IO.MenuePos%3 == 0 or IO.MenuePos%3 == 1:
                     print("game started")
                     isContinued = True
 
@@ -247,7 +247,7 @@ playerName = IO.getInput("Enter player name:")
 
 if loadPreset:
     mapNum = IO.getInput("Enter preset map number:")
-    cave.loadPresetMap(mapNum)
+    cave.loadPresetMap(int(mapNum))
 else:
     cave.genNewMap(location.getHazards())
 

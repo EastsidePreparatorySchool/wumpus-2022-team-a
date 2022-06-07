@@ -112,7 +112,7 @@ class Cave:
 
     def loadPresetMap(self, num):
         if type(num) is int:
-            return self.loadPrevGame("MapFiles/test" + str(num) + ".txt")
+            self.loadPrevGame("MapFiles/test" + str(num) + ".txt")
         else:
             print("invalid input:", num)
             return -1
