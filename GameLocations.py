@@ -26,19 +26,21 @@ class GameLocations:
         hazards[hazardPos[2]] = "BAT"
         hazards[hazardPos[3]] = "BAT"
     
-    def spawnItemsCustom(self):
+    def spawnItemsCustom(self, wumpus, spawnWumpPos):
         hazards = self.getHazards()
+        for i in range(30):
+            hazards[i] = ""
 
         p1 = 25
         p2 = 13
         b1 = 30
         b2 = 3
-        w.wumpPos = 9
 
         hazards[p1] = "PIT"
         hazards[p2] = "PIT"
         hazards[b1] = "BAT"
         hazards[b2] = "BAT"
+        wumpus.wumpPos = spawnWumpPos
 
     # Called by GameControl
     def checkHazards(self, currentPos, wumpus, cave, player):

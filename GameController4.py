@@ -70,13 +70,12 @@ print("Game initialized")
 
 
 
-#displayImg = font.render("It begins in a deeeeep dark cavern", True, WHITE)
-#displayImg2 = font.render("'Enter' to continue . . .", True, WHITE)
-IO.getInput("You find yourself in a deep, dark cavern. Press Enter to continue...")
+
 
 # input("Press enter to begin! ")
 # playerName = input("What's your name? ")
-location.spawnItemsRandom()
+# location.spawnItemsRandom()
+location.spawnItemsCustom(wumpus, 11) # Spawn wumpus at 5
 cave.loadPrevGame(r'MapFiles\demoFile.txt')
 # for diagnostic purposes
 print(location.getHazards())
@@ -96,6 +95,7 @@ def Move():
 
         if int(move) in cave.getConnections(player.pos):
             player.pos = int(move)
+            player.coins += 1
             sound.playSound("coin")
             IO.write("Moved into " + move)
             based = True
@@ -203,6 +203,51 @@ def checkGameQuit():
     return True
 
 
+isContinued = False
+while isContinued == False:
+
+
+    for event in pygame.event.get() :
+  
+
+        if event.type == pygame.QUIT :
+  
+            pygame.quit()
+
+            quit()
+
+        if event.type == KEYDOWN:
+            if event.key == K_UP : 
+
+                IO.MenuePos -= 1
+                # Draws the surface object to the screen.  
+            if event.key == K_DOWN :
+
+                IO.MenuePos += 1 
+            
+            if event.key == K_RETURN:
+
+                if IO.MenuePos%3 is 0:
+
+                    print("game started")
+
+                    isContinued = True
+                
+                if IO.MenuePos%3 is 2:
+
+                    pygame.quit()
+
+                    quit()
+
+        
+    IO.drawMenueFrame()
+
+
+
+#displayImg = font.render("It begins in a deeeeep dark cavern", True, WHITE)
+#displayImg2 = font.render("'Enter' to continue . . .", True, WHITE)
+IO.getInput("You find yourself in a deep, dark cavern. Press Enter to continue...")
+
 turnNum = True # why is this a boolean instead of a number?
 gameOn = True
 # Our game loop
@@ -210,13 +255,7 @@ while gameOn:
 
     connections = str(cave.getConnections(player.pos))
     hazards = location.checkHazards(player.pos, wumpus, cave, player)
-
-    # this should probably be moved to after hazards are checked
-    turnType = IO.getInput("move OR shoot OR buy arrow OR buy secret")
-
     gameOn = checkGameQuit()
-
-
 
     if hazards == "W":
         # fight the wumpus
@@ -251,6 +290,10 @@ while gameOn:
             # TODO probably only one of the above lines is necessary
         wumpus.changeToAwake()
         wumpus.moveWumpus(cave)
+    
+
+    # this should probably be moved to after hazards are checked
+    turnType = IO.getInput("move OR shoot OR buy arrow OR buy secret")
 
     #IO.write("Player position:" + str(player.pos))
     IO.write("Nearby rooms: " + str(cave.getConnections(player.pos)))

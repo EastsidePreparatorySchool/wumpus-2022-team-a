@@ -8,7 +8,15 @@ pygame.init()
 
 WHITE = (250, 250, 250)
 BLACK = (0, 0, 0)
+loc1 = (480, 450)
+loc2 = (480, 500)
+loc3 = (480, 550)
+MenuePos = 0
 screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+MenueBackground = pygame.image.load(r'Images\MainScreen.png')
+MenueBackground = pygame.transform.scale(MenueBackground, (1280, 720))
+Cursor = pygame.image.load(r'Images\Cursor.png')
+Cursor = pygame.transform.scale(Cursor, (40, 30))
 Coin = pygame.image.load(r'Images\Koala.jpg')
 Coin = pygame.transform.scale(Coin, (50, 50))
 font = pygame.font.SysFont(None, 32)
@@ -20,6 +28,22 @@ connectionsText = ""
 displayText = ""
 displayText2 = ""
 inputText = ""
+
+
+def drawMenueFrame():
+
+    screen.blit(MenueBackground, (0,0))
+
+    if MenuePos%3 is 0:
+        screen.blit(Cursor, loc1 )
+    if MenuePos%3 is 1:
+        screen.blit(Cursor, loc2 )
+    if MenuePos%3 is 2:
+        screen.blit(Cursor, loc3)
+    
+    pygame.display.update() 
+
+
 
 def drawFrame():
 
@@ -53,6 +77,12 @@ def drawFrame():
 
             if(player.coins > 2):
                 screen.blit(Coin, (190, 50))
+
+                if(player.coins > 3):
+                    screen.blit(Coin, (260, 50))
+
+                    if(player.coins > 4):
+                        screen.blit(Coin, (330, 50))
 
     inputRect.size=inputImg.get_size()
     cursor.topleft = inputRect.topright
