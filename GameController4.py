@@ -92,7 +92,9 @@ def Move():
 
         if int(move) in cave.getConnections(player.pos):
             player.pos = int(move)
-            player.coins += 1
+            if player.coinsAll < 100:
+                player.coinsAll += 1
+                player.coinsNow += 1
             sound.playSound("coin")
             IO.write("Moved into " + move)
             based = True
