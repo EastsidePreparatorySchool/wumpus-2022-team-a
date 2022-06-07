@@ -200,7 +200,7 @@ def checkGameQuit():
     return True
 
 def giveWarnings():
-    return location.getWarnings(wumpus, cave, player)
+    return location.getWarnings()
 
 isContinued = False
 while isContinued == False:
@@ -292,8 +292,8 @@ while gameOn:
     
 
     # this should probably be moved to after hazards are checked
-    print(location.getWarnings(wumpus, cave, player))
-    turnType = IO.getInput("move OR shoot OR buy arrow OR buy secret", location.getWarnings(wumpus, cave, player))
+    print(location.getWarnings())
+    turnType = IO.getInput("move OR shoot OR buy arrow OR buy secret", location.getWarnings())
 
     #IO.write("Player position:" + str(player.pos))
     IO.write("Nearby rooms: " + str(cave.getConnections(player.pos)))
@@ -319,7 +319,7 @@ while gameOn:
     elif turnType == "buy secret":
         BuySecret()
 
-    warnings = location.getWarnings(wumpus, cave, player)
+    warnings = location.getWarnings()
     IO.drawFrame()
     turnNum += 1
 

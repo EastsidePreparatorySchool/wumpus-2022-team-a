@@ -21,8 +21,11 @@ MenueBackground = pygame.transform.scale(MenueBackground, (1280, 720))
 Cursor = pygame.image.load(r'Images\Cursor.png')
 Cursor = pygame.transform.scale(Cursor, (40, 30))
 
-Coin = pygame.image.load(r'Images\Koala.jpg')
+Coin = pygame.image.load(r'Images\Coin.png')
 Coin = pygame.transform.scale(Coin, (50, 50))
+
+Arrow = pygame.image.load(r'Images\Arrow.png')
+Arrow = pygame.transform.scale(Arrow, (50, 50))
 
 Caution = pygame.image.load(r'Images\Caution.png')
 Caution = pygame.transform.scale(Caution, (23, 24))
@@ -111,21 +114,13 @@ def drawFrame(warnings=shownWarnings):
     
     
 
-    #Coin manager
-    if(player.coins > 0):
-        screen.blit(Coin, (50, 50))
+    
 
-        if(player.coins > 1):
-            screen.blit(Coin, (120, 50))
+    for n in range(player.coins):
+        screen.blit(Coin, (60 + 70*n, 50))
 
-            if(player.coins > 2):
-                screen.blit(Coin, (190, 50))
-
-                if(player.coins > 3):
-                    screen.blit(Coin, (260, 50))
-
-                    if(player.coins > 4):
-                        screen.blit(Coin, (330, 50))
+    for n in range(player.arrows):
+        screen.blit(Arrow, (1160 - 70*n, 50))
 
     inputRect.size=inputImg.get_size()
     cursor.topleft = inputRect.topright
