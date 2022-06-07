@@ -71,7 +71,6 @@ print("Cave initialized")
 
 location = GameLocations()
 print("Location initialized")
-# location.spawnItems(wumpus, cave, player)
 
 trivia = Trivia()
 print("Trivia initialized")
@@ -90,7 +89,12 @@ displayImg = font.render("It begins in a deeeeep dark cavern", True, WHITE)
 displayImg2 = font.render("'Enter' to continue . . .", True, WHITE)
 # input("Press enter to begin! ")
 # playerName = input("What's your name? ")
+<<<<<<< Updated upstream
 location.spawnItemsRandom()
+=======
+# location.spawnItemsRandom()
+location.spawnItemsCustom(wumpus)
+>>>>>>> Stashed changes
 cave.loadPrevGame(r'MapFiles\demoFile.txt')
 # for diagnostic purposes
 print(location.getHazards())

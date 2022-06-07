@@ -2,6 +2,9 @@ import pygame
 
 class Sound:
     def __init__(self, playMusic):
+        # creates sound objects for each sound
+        # loading in the sounds in the SoundFiles directory
+
         pygame.mixer.init()
 
         self.coinSound = pygame.mixer.Sound('SoundFiles/coin.wav')
@@ -30,6 +33,8 @@ class Sound:
             pygame.mixer.music.play(-1)
 
     def playSound(self, sound):
+        # plays a sound based on text input
+
         if sound == "coin":
             self.coinSound.play()
         elif sound == "pit":

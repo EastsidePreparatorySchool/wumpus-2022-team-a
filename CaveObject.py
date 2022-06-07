@@ -110,63 +110,6 @@ class Cave:
 
         file.close()
 
-    def loadPresetMap(self):
-        # in future, probably need preset number as a parameter
-
-        # loads a preset, built-in map,
-        # overrides the map stored here,
-        # then returns the map
-
-        self.caverns = {0, 1, 5, 6, 24, 25, 29}
-        self.adjacencyList = {}
-        for i in self.caverns:
-            # add empty array to list
-            self.adjacencyList.update({i: []})
-
-        self.addAdjacent(0,0)
-        self.addAdjacent(0,1)
-        self.addAdjacent(0,5)
-        self.addAdjacent(0,6)
-        self.addAdjacent(0,24)
-        self.addAdjacent(0,25)
-        self.addAdjacent(0,29)
-
-        self.addAdjacent(1,0)
-        self.addAdjacent(1,6)
-
-        self.addAdjacent(5,0)
-        self.addAdjacent(5,6)
-        self.addAdjacent(5,29)
-
-        self.addAdjacent(6,0)
-        self.addAdjacent(6,1)
-        self.addAdjacent(6,5)
-
-        self.addAdjacent(24,0)
-        self.addAdjacent(24,25)
-        self.addAdjacent(24,29)
-
-        self.addAdjacent(29,0)
-        self.addAdjacent(29,24)
-
-        self.addAdjacent(25,0)
-        self.addAdjacent(25,24)
-
-        self.connectionList = {}
-        for i in self.caverns:
-            # add empty array to list
-            self.connectionList.update({i: []})
-
-        self.addConnection(0, 1)
-        self.addConnection(0, 24)
-        self.addConnection(0, 29)
-        self.addConnection(1, 6)
-        self.addConnection(6, 5)
-        self.addConnection(29, 24)
-        self.addConnection(24, 25)
-
-        return self.caverns, self.adjacencyList, self.connectionList
-
     def genNewMap(self, hazards):
         # generates a new map using a randomized algorithm
         # overriding the map stored here,
@@ -184,10 +127,12 @@ class Cave:
         return self.adjacencyList[cavern]
 
     def getRandomCavern(self):
+        # returns a random cavern
         randRow = random.choice(self.caverns)
         return random.choice(randRow)
 
     def getDist(self, cav1, cav2):
+        # returns the distance between two given caverns
         current = cav1
         fringe = []
         visited = []
@@ -217,6 +162,8 @@ class Cave:
                     fringe.append((cost+1, c))
 
     def isAccessible(self, cavern):
+        # returns whether or not a cavern is accessible 
+        # with current connection configuration
         if cavern == 0: return True
         current = cavern
         visited = []
@@ -249,6 +196,7 @@ class Cave:
         return len(self.getConnections(cav1)) + len(self.getConnections(cav2))
 
     def importHazards(self, haz):
+        # imports hazards into list for use in cave generation
         self.hazards = []
 
         for i in range(30):
@@ -257,6 +205,7 @@ class Cave:
                 self.hazards.append(i)
     
     def addAdjacent(self, index, addIndex):
+        # adds a reference of an adjacent cavern for a given cavern
         idx = addIndex % 30
         
         # if it's not already in there, add it
@@ -264,28 +213,20 @@ class Cave:
             self.adjacencyList[index].append(idx)
 
     def addConnection(self, caveNum1, caveNum2):
+        # adds a connection between two caverns
         if caveNum1 not in self.connectionList[caveNum2] and caveNum2 not in self.connectionList[caveNum1]:
             self.connectionList[caveNum1].append(caveNum2)
             self.connectionList[caveNum2].append(caveNum1)
 
     def printSelf(self):
+        # prints the connections and adjacent caverns
         pprint.pprint(self.adjacencyList)
         pprint.pprint(self.connectionList)
-
-        # print("1  2  3  4  5  6")
-        # print("                ")
-        # print("7  8  9  10 11 12")
-        # print("                ")
-        # print("13 14 15 16 17 18")
-        # print("                ")
-        # print("19 20 21 22 23 24")
-        # print("                ")
-        # print("25 26 27 28 29 30")
 
 # cave = Cave()
 
 # from GameLocations import GameLocations
 # locations = GameLocations()
-# locations.spawnItems()
+# locations.spawnItemsRandom()
 # cave.genNewMap(locations.getHazards())
 # cave.saveMapFile("MapFiles/demofile.txt")
