@@ -116,7 +116,7 @@ def drawFrame(warnings=shownWarnings):
 
     
 
-    for n in range(player.coins):
+    for n in range(player.coinsNow):
         screen.blit(Coin, (60 + 70*n, 50))
 
     for n in range(player.arrows):
