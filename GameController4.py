@@ -69,9 +69,6 @@ cursor = Rect(inputRect.topright, (3, inputRect.height))
 print("Game initialized")
 
 
-
-
-
 # input("Press enter to begin! ")
 # playerName = input("What's your name? ")
 # location.spawnItemsRandom()
@@ -297,7 +294,7 @@ while gameOn:
 
     #IO.write("Player position:" + str(player.pos))
     IO.write("Nearby rooms: " + str(cave.getConnections(player.pos)))
-    warnings = location.getWarnings(wumpus, cave, player)
+    warnings = location.getWarnings()
     if "PIT" in warnings:
         IO.write("You feel a draft")
         sound.playSound("pit")
