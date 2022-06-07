@@ -110,6 +110,13 @@ class Cave:
 
         file.close()
 
+    def loadPresetMap(self, num):
+        if type(num) is int:
+            return self.loadPrevGame("MapFiles/test" + str(num) + ".txt")
+        else:
+            print("invalid input:", num)
+            return -1
+
     def genNewMap(self, hazards):
         # generates a new map using a randomized algorithm
         # overriding the map stored here,
@@ -223,10 +230,7 @@ class Cave:
         pprint.pprint(self.adjacencyList)
         pprint.pprint(self.connectionList)
 
-# cave = Cave()
+cave = Cave()
 
-# from GameLocations import GameLocations
-# locations = GameLocations()
-# locations.spawnItemsRandom()
-# cave.genNewMap(locations.getHazards())
-# cave.saveMapFile("MapFiles/demofile.txt")
+cave.loadPresetMap(10)
+cave.printSelf()
