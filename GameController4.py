@@ -201,9 +201,6 @@ def checkGameQuit():
     # true if they're not closing window
     return True
 
-def giveWarnings():
-    return location.getWarnings()
-
 isContinued = False
 loadPreset = False
 while isContinued == False:
