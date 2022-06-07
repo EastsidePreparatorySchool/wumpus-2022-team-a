@@ -92,7 +92,9 @@ def Move():
 
         if int(move) in cave.getConnections(player.pos):
             player.pos = int(move)
-            player.coins += 1
+            if player.coinsAll < 100:
+                player.coinsAll += 1
+                player.coinsNow += 1
             sound.playSound("coin")
             IO.write("Moved into " + move)
             based = True
@@ -245,7 +247,11 @@ while isContinued == False:
 
 #displayImg = font.render("It begins in a deeeeep dark cavern", True, WHITE)
 #displayImg2 = font.render("'Enter' to continue . . .", True, WHITE)
+playerName = IO.getInput("Enter player name:")
+
+
 IO.getInput("You find yourself in a deep, dark cavern. Press Enter to continue...")
+
 
 turnNum = True # why is this a boolean instead of a number?
 gameOn = True
@@ -333,6 +339,7 @@ score = player.computeEndScore(wumpus.getWumpState(), turnNum)
 print("your score is " + str(score))
 highScores.addHighScore("player1", score)
 highScoresList = highScores.getHighScores()
+highScores.addHighScore(playerName, score)
 highScores.writeHighScores()
 
 #NEED TO SEND THIS TO PYGAME WINDOW
