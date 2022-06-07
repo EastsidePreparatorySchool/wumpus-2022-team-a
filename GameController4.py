@@ -70,13 +70,12 @@ print("Game initialized")
 
 
 
-#displayImg = font.render("It begins in a deeeeep dark cavern", True, WHITE)
-#displayImg2 = font.render("'Enter' to continue . . .", True, WHITE)
-IO.getInput("You find yourself in a deep, dark cavern. Press Enter to continue...")
+
 
 # input("Press enter to begin! ")
 # playerName = input("What's your name? ")
-location.spawnItemsRandom()
+# location.spawnItemsRandom()
+location.spawnItemsCustom(wumpus, spawnWumpPos)
 cave.loadPrevGame(r'MapFiles\demoFile.txt')
 # for diagnostic purposes
 print(location.getHazards())
@@ -202,6 +201,43 @@ def checkGameQuit():
     # true if they're not closing window
     return True
 
+
+isContinued = False
+while isContinued == False:
+
+
+    for event in pygame.event.get() :
+  
+
+        if event.type == pygame.QUIT :
+  
+            pygame.quit()
+
+            quit()
+
+        if event.type == KEYDOWN:
+            if event.key == K_UP : 
+
+                IO.MenuePos -= 1
+                # Draws the surface object to the screen.  
+            if event.key == K_DOWN :
+
+                IO.MenuePos += 1 
+            
+            if event.key == K_RETURN:
+
+                print("game started")
+
+                isContinued = True
+
+        
+    IO.drawMenueFrame()
+
+
+
+#displayImg = font.render("It begins in a deeeeep dark cavern", True, WHITE)
+#displayImg2 = font.render("'Enter' to continue . . .", True, WHITE)
+IO.getInput("You find yourself in a deep, dark cavern. Press Enter to continue...")
 
 turnNum = True # why is this a boolean instead of a number?
 gameOn = True
