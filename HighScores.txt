@@ -1,6 +1,5 @@
 joe - 94
-andrei - 2
 bob - 97
 bob2 - 99
-bob3 - 82
 move - 89
+player1 - 97
