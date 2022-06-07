@@ -78,6 +78,12 @@ def drawFrame():
             if(player.coins > 2):
                 screen.blit(Coin, (190, 50))
 
+                if(player.coins > 3):
+                    screen.blit(Coin, (260, 50))
+
+                    if(player.coins > 4):
+                        screen.blit(Coin, (330, 50))
+
     inputRect.size=inputImg.get_size()
     cursor.topleft = inputRect.topright
 

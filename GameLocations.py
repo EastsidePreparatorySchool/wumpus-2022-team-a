@@ -28,6 +28,8 @@ class GameLocations:
     
     def spawnItemsCustom(self, wumpus, spawnWumpPos):
         hazards = self.getHazards()
+        for i in range(30):
+            hazards[i] = ""
 
         p1 = 25
         p2 = 13

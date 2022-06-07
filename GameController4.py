@@ -75,7 +75,7 @@ print("Game initialized")
 # input("Press enter to begin! ")
 # playerName = input("What's your name? ")
 # location.spawnItemsRandom()
-location.spawnItemsCustom(wumpus, spawnWumpPos)
+location.spawnItemsCustom(wumpus, 11) # Spawn wumpus at 5
 cave.loadPrevGame(r'MapFiles\demoFile.txt')
 # for diagnostic purposes
 print(location.getHazards())
@@ -95,6 +95,7 @@ def Move():
 
         if int(move) in cave.getConnections(player.pos):
             player.pos = int(move)
+            player.coins += 1
             sound.playSound("coin")
             IO.write("Moved into " + move)
             based = True
@@ -226,9 +227,17 @@ while isContinued == False:
             
             if event.key == K_RETURN:
 
-                print("game started")
+                if IO.MenuePos%3 is 0:
 
-                isContinued = True
+                    print("game started")
+
+                    isContinued = True
+                
+                if IO.MenuePos%3 is 2:
+
+                    pygame.quit()
+
+                    quit()
 
         
     IO.drawMenueFrame()
@@ -246,13 +255,7 @@ while gameOn:
 
     connections = str(cave.getConnections(player.pos))
     hazards = location.checkHazards(player.pos, wumpus, cave, player)
-
-    # this should probably be moved to after hazards are checked
-    turnType = IO.getInput("move OR shoot OR buy arrow OR buy secret")
-
     gameOn = checkGameQuit()
-
-
 
     if hazards == "W":
         # fight the wumpus
@@ -287,6 +290,10 @@ while gameOn:
             # TODO probably only one of the above lines is necessary
         wumpus.changeToAwake()
         wumpus.moveWumpus(cave)
+    
+
+    # this should probably be moved to after hazards are checked
+    turnType = IO.getInput("move OR shoot OR buy arrow OR buy secret")
 
     #IO.write("Player position:" + str(player.pos))
     IO.write("Nearby rooms: " + str(cave.getConnections(player.pos)))
