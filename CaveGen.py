@@ -1,7 +1,13 @@
 import operator
 import random
 
+# collection of functions for generating the cave
+
 def makeAllAccessible(cave, hazards):
+    # main function, for generating a cave randomly
+    # ensures that hazards are accounted for, and 
+    # that every cavern is accessible
+
     current = 0
     fringe = []
     visited = []
@@ -45,6 +51,7 @@ def makeAllAccessible(cave, hazards):
                 updateAccessibilityFringe(cave, fringe)
 
 def isInAccessibilityFringe(c, other, fringe):
+    # checks to see if a connection is in the fringe
     for f in fringe:
         if f[1] == c or f[2] == c:
             if f[1] == other or f[2] == other:
@@ -53,6 +60,7 @@ def isInAccessibilityFringe(c, other, fringe):
     return False
 
 def isInDistanceFringe(c, fringe):
+    # checks if a distance is in the fringe
     for f in fringe:
         if f[1] == c:
             return True
@@ -60,12 +68,15 @@ def isInDistanceFringe(c, fringe):
     return False
 
 def updateAccessibilityFringe(cave, fringe):
+    # adds connections to the accessibility fringe
     for i in range(len(fringe)):
         fringe[i] = (cave.getNumDualConnections(fringe[i][1], fringe[i][2]), fringe[i][1], fringe[i][2])
 
     fringe = sorted(fringe, key=operator.itemgetter(0))
 
 def getRandomMinFromAccessibilityFringe(fringe):
+    # returns a random connection from the fringe
+    # of the lowest possible distance
     fringe = sorted(fringe, key=operator.itemgetter(0))
     minVal = 100000000000
     for f in fringe:
@@ -78,6 +89,9 @@ def getRandomMinFromAccessibilityFringe(fringe):
     return fringe.pop(fringe.index(returnVal))
 
 def areAllAccessible(cave):
+    # checks if all of the caverns are accessible
+    # end check
+
     current = 0
     fringe = []
     fringe.extend(cave.getConnections(current))
@@ -103,6 +117,7 @@ def areAllAccessible(cave):
         
     
 def makeMoreConnections(cave, iterations):
+    # adds in connections randomly, while adhering to the rules
     for i in range(iterations):
         # make connections if possible
         current = cave.getRandomCavern()
