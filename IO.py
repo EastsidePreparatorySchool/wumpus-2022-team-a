@@ -33,6 +33,9 @@ Caution = pygame.transform.scale(Caution, (23, 24))
 CautionUnlit = pygame.image.load(r'Images\CautionUnlit.png')
 CautionUnlit = pygame.transform.scale(CautionUnlit, (23, 24))
 
+Room = pygame.image.load(r'Images\room1.png')
+Room = pygame.transform.scale(Room, (600, 180))
+
 
 font = pygame.font.SysFont(None, 32)
 
@@ -113,7 +116,7 @@ def drawFrame(warnings=shownWarnings):
         screen.blit(BatsImg, (950, 600))
     
     
-
+    screen.blit(Room, (340, 150))
     
 
     for n in range(player.coinsNow):
