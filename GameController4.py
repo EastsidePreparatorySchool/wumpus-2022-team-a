@@ -136,55 +136,79 @@ def ShootArrow():
             direction = IO.getInput("Not a valid response. Enter the number room you want to enter.")
 
 def BuyArrow():
+    IO.write("You attempt to purchase an arrow.")
     if trivia.challenge(2, 3):
         player.arrows += 1
-        IO.write("gained one arrow")
+        IO.write("Gained one arrow!")
         sound.playSound("coin")
     else:
-        IO.write("failed to buy an arrow")
+        IO.write("Failed to buy an arrow.")
 
 def BuySecret():
-    IO.write("you attempt to purchase a secret")
+    IO.write("You attempt to purchase a secret.")
     if trivia.challenge(2, 3):
         player.arrows += 1
-        IO.write("here is your secret: " + trivia.getSecret())
+        IO.write("Here is your secret: ", trivia.getSecret())
+        IO.getInput()
+        # clear secret from display
+        IO.write("")
     else:
-        IO.write("failed to get a secret")
+        IO.write("Failed to get a secret.")
 
 # define interactions with wumpus or hazards
 
 def FightWumpus():
     global gameOn
-    IO.write("the wumpus is here. Fight for your life.")
-    IO.getInput("Press Enter to begin the fight.")
+    IO.write("The wumpus is here. Fight for your life.")
+    #IO.getInput("Press Enter to begin the fight.")
     sound.playSound("wumpus3")
     if trivia.challenge(3, 5):
-        IO.write("you escape the wumpus and move to a random connected room")
+        IO.write("You escape the wumpus and move to a random connected room.")
         wumpus.setTurnsToMove(wumpus.trivia())
         wumpus.changeToAwake()
         player.pos = random.choice(cave.getConnections(player.pos))
         
     else:
-        IO.write("", "the wumpus eats you")
+        IO.write("", "The wumpus eats you.")
         sound.playSound("plHit")
         gameOn = False
 
 def GetMovedByBat():
-    IO.write("a bat sweeps you away")
+    #IO.write("A bat sweeps you away")
+    IO.write("Claws grip your neck and hoist you upward.")
+    IO.getInput()
+    IO.write("Airborne, you careen through the cave, nearly colliding with its guano-covered walls.")
     sound.playSound("bat2")
+    IO.getInput()
+    IO.write("The bat drops you in room " + str(player.pos) + ".")
+    IO.getInput()
+    # clear display text
+    IO.write("")
     player.pos = random.randint(0, 29)
 
 # returns true if you died, false if survived
 def FallIntoPit():
-    IO.write("you step into a pit. you attempt to catch yourself")
+    IO.write("You stumble as the ground becomes the top of a cliff. You try to catch yourself!")
     if trivia.challenge(2, 3):
-        IO.write("you pull yourself out of the pit and find yourself in room 0")
+        IO.write("You pull yourself out of the pit and recognize this as the room you began in.")
         return False
     else:
-        IO.write("", "you plunge into darkness. game over")
+        #IO.write("", "You plunge into darkness. game over")
+        IO.write("You fall toward the center of the pit.")
+        IO.getInput()
+        IO.write("You feel your feet slip away from the last vestige of solid rock.")
+        IO.getInput()
         sound.playSound("amb1")
+        coinMessage = "You feel nothing but the "
+        if player.coinsNow > 1:
+            coinMessage += "weight of gold in your pocket "
+        elif player.coinsNow == 1:
+            coinMessage += "coolness of your last coin on your tense fingers "
+        else:
+            coinMessage += "emptiness of your pockets "
+        coinMessage += "as you plunge into darkness. Game over."
+        IO.write(coinMessage)
         return True
-
 
 # check if player is closing game window -- return false if game is being quit
 def checkGameQuit():
@@ -302,12 +326,9 @@ while gameOn:
 
 
 
-    # this should probably be moved to after hazards are checked
     print(location.getWarnings())
-    turnType = IO.getInput("move OR shoot OR buy arrow OR buy secret", location.getWarnings())
-
     #IO.write("Player position:" + str(player.pos))
-    IO.write("Nearby rooms: " + str(cave.getConnections(player.pos)))
+    #IO.write("Nearby rooms: " + str(cave.getConnections(player.pos)))  consolidating this message with the thing that always shows connected rooms
     warnings = location.getWarnings()
     if "PIT" in warnings:
         IO.write("You feel a draft")
@@ -317,7 +338,10 @@ while gameOn:
         sound.playSound("bat1")
     if "WUMPUS" in warnings:
         IO.write("You smell a wumpus")
+        sound.playSound(random.choice(("wumpus1", "wumpus2")))
     
+    # player chooses which action to take
+    turnType = IO.getInput("move OR shoot OR buy arrow OR buy secret", location.getWarnings())
 
     if turnType == "shoot":  
         ShootArrow()
@@ -335,6 +359,7 @@ while gameOn:
     IO.drawFrame()
     turnNum += 1
 
+IO.getInput()
 
 # TODO tell player their score, note both displays might already be in use so maybe wait
 # before doing this

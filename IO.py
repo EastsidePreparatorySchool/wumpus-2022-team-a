@@ -39,6 +39,7 @@ font = pygame.font.SysFont(None, 32)
 background = BLACK
 player = MainObjects.player
 cave = MainObjects.cave
+sound = MainObjects.sound
 
 connectionsText = ""
 displayText = ""
@@ -64,7 +65,6 @@ def drawMenueFrame():
 # you can leave the warnings parameter blank if you want the displayed warnings to continue to
 # be whatever you last set them to
 def drawFrame(warnings=shownWarnings):
-
     displayImg = font.render(displayText, True, WHITE)
     displayImg2 = font.render(displayText2, True, WHITE)
     connectionsImg = font.render(connectionsText, True, WHITE)
@@ -89,7 +89,7 @@ def drawFrame(warnings=shownWarnings):
     screen.blit(inputImg, inputRect)
     screen.blit(displayImg, displayRect)
     screen.blit(displayImg2, displayRect2)
-
+    
     global shownWarnings
     shownWarnings = warnings
 
@@ -129,8 +129,8 @@ def drawFrame(warnings=shownWarnings):
         pygame.draw.rect(screen, WHITE, cursor)
     pygame.display.update()
 
-# prompt user for text input
-def getInput(question, warnings=shownWarnings):
+# prompt user for text input. question can be empty to keep previous display text
+def getInput(question="", warnings=shownWarnings):
 
     global shownWarnings
     shownWarnings = warnings
@@ -141,9 +141,15 @@ def getInput(question, warnings=shownWarnings):
 
     playerInput = ""
     answered = False
-    displayText2 = question
+    if question != "":
+        displayText2 = question
+    else:
+        # add a space between sentences if necessary
+        if len(displayText2) > 0 and displayText2[-1] != ' ':
+            displayText2 += " "
+        displayText2 += "'Enter' to continue..."
     inputText = ""
-    connectionsText = str(cave.getConnections(player.pos))
+    connectionsText = "Nearby rooms: " + str(cave.getConnections(player.pos))
 
     drawFrame(warnings)
 
