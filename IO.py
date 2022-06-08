@@ -120,10 +120,12 @@ def drawFrame(warnings=shownWarnings):
     
 
     for n in range(player.coinsNow):
-        screen.blit(Coin, (60 + 70*n, 50))
+        if player.coinsNow < 11:
+            screen.blit(Coin, (60 + 70*n, 50))
 
     for n in range(player.arrows):
-        screen.blit(Arrow, (1160 - 70*n, 50))
+        if player.arrows < 4:
+            screen.blit(Arrow, (1160 - 70*n, 50))
 
     inputRect.size=inputImg.get_size()
     cursor.topleft = inputRect.topright

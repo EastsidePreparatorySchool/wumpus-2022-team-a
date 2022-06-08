@@ -226,155 +226,163 @@ def checkGameQuit():
     # true if they're not closing window
     return True
 
-isContinued = False
-loadPreset = False
-while isContinued == False:
 
-
-    for event in pygame.event.get() :
-  
-
-        if event.type == pygame.QUIT :
-  
-            pygame.quit()
-
-            quit()
-
-        if event.type == KEYDOWN:
-            if event.key == K_UP : 
-
-                IO.MenuePos -= 1
-                # Draws the surface object to the screen.  
-            if event.key == K_DOWN :
-
-                IO.MenuePos += 1 
-            
-            if event.key == K_RETURN:
-
-                loadPreset = (IO.MenuePos%3 == 1)
-
-                if IO.MenuePos%3 == 0 or IO.MenuePos%3 == 1:
-                    print("game started")
-                    isContinued = True
-
-                if IO.MenuePos%3 == 2:
-                    pygame.quit()
-                    quit()
-
+windowIsOpen = True
+while windowIsOpen:
         
-    IO.drawMenueFrame()
+    isContinued = False
+    loadPreset = False
+    while isContinued == False:
 
 
-
-#displayImg = font.render("It begins in a deeeeep dark cavern", True, WHITE)
-#displayImg2 = font.render("'Enter' to continue . . .", True, WHITE)
-playerName = IO.getInput("Enter player name:")
-
-if loadPreset:
-    mapNum = IO.getInput("Enter preset map number:")
-    cave.loadPresetMap(int(mapNum))
-else:
-    cave.genNewMap(location.getHazards())
-
-IO.getInput("You find yourself in a deep, dark cavern. Press Enter to continue...")
-
-
-turnNum = 0 
-gameOn = True
-# Our game loop
-while gameOn:
-
-    connections = str(cave.getConnections(player.pos))
-    hazards = location.checkHazards(player.pos, wumpus, cave, player)
-    gameOn = checkGameQuit()
-
-    if hazards == "W":
-        # fight the wumpus
-        FightWumpus()
-        if not gameOn:
-            # don't do the rest of the turn if you're dead
-            break
+        for event in pygame.event.get() :
     
-    if hazards == "B":
-        GetMovedByBat()
-        # moving is taken care of in GameLocations
-        # continue to count this as a full turn, so hazards and warnings
-        # are checked before player move/shoot
 
-        # IMPORTANT!!!!
-        # got rid of continues because wumpus behind the scene movement
-        # must still happen
-    if hazards == "P":
-        # moving to cavern 0 is done in GameLocations
-        if FallIntoPit():
-            gameOn = False
-            break
-            # TODO probably only one of the above lines is necessary
-    if hazards == "WB":
-        wumpus.setTurnsToMove(1)
-        wumpus.changeToAwake()
-        IO.getInput("you glimpse the wumpus before...")
-        GetMovedByBat()
-    if hazards == "WP":
-        wumpus.setTurnsToMove(1)
-        wumpus.changeToAwake()
-        IO.getInput("you glimpse the wumpus before...")
-        if FallIntoPit():
-            gameOn = False
-            break
-            # TODO probably only one of the above lines is necessary
-
-
-
-    print(location.getWarnings())
-    #IO.write("Player position:" + str(player.pos))
-    #IO.write("Nearby rooms: " + str(cave.getConnections(player.pos)))  consolidating this message with the thing that always shows connected rooms
-    warnings = location.getWarnings()
-    if "PIT" in warnings:
-        IO.write("You feel a draft")
-        sound.playSound("pit")
-    if "BAT" in warnings:
-        IO.write("You hear large wings flapping")
-        sound.playSound("bat1")
-    if "WUMPUS" in warnings:
-        IO.write("You smell a wumpus")
-        sound.playSound(random.choice(("wumpus1", "wumpus2")))
+            if event.type == pygame.QUIT :
     
-    # player chooses which action to take
-    turnType = IO.getInput("move OR shoot OR buy arrow OR buy secret", location.getWarnings())
+                pygame.quit()
 
-    if turnType == "shoot":  
-        ShootArrow()
-        if wumpus.wumpState == "DEAD":
-            gameOn = False
-    elif turnType == "move":  
-        Move()
-    elif turnType == "buy arrow":
-        BuyArrow()
-    elif turnType == "buy secret":
-        BuySecret()
+                quit()
 
-    wumpus.endTurnMove(cave, turnNum)
-    warnings = location.getWarnings()
-    IO.drawFrame()
-    turnNum += 1
+            if event.type == KEYDOWN:
+                if event.key == K_UP : 
 
-IO.getInput()
+                    IO.MenuePos -= 1
+                    # Draws the surface object to the screen.  
+                if event.key == K_DOWN :
 
-# TODO tell player their score, note both displays might already be in use so maybe wait
-# before doing this
+                    IO.MenuePos += 1 
+                
+                if event.key == K_RETURN:
 
-print("game over")
+                    loadPreset = (IO.MenuePos%3 == 1)
 
-score = player.computeEndScore(wumpus.getWumpState(), turnNum)
-print("your score is " + str(score))
-highScores.addHighScore("player1", score)
-highScoresList = highScores.getHighScores()
-highScores.addHighScore(playerName, score)
-highScores.writeHighScores()
+                    if IO.MenuePos%3 == 0 or IO.MenuePos%3 == 1:
+                        print("game started")
+                        isContinued = True
 
-#NEED TO SEND THIS TO PYGAME WINDOW
-print(highScoresList)
+                    if IO.MenuePos%3 == 2:
+                        pygame.quit()
+                        quit()
+
+            
+        IO.drawMenueFrame()
+
+
+
+    #displayImg = font.render("It begins in a deeeeep dark cavern", True, WHITE)
+    #displayImg2 = font.render("'Enter' to continue . . .", True, WHITE)
+    playerName = IO.getInput("Enter player name:")
+
+    if loadPreset:
+        mapNum = IO.getInput("Enter preset map number:")
+        cave.loadPresetMap(int(mapNum))
+    else:
+        cave.genNewMap(location.getHazards())
+
+    IO.getInput("You find yourself in a deep, dark cavern. Press Enter to continue...")
+
+
+    turnNum = 0 
+    gameOn = True
+    # Our game loop
+    while gameOn:
+
+        connections = str(cave.getConnections(player.pos))
+        hazards = location.checkHazards(player.pos, wumpus, cave, player)
+        gameOn = checkGameQuit()
+
+        if hazards == "W":
+            # fight the wumpus
+            FightWumpus()
+            if not gameOn:
+                # don't do the rest of the turn if you're dead
+                break
+        
+        if hazards == "B":
+            GetMovedByBat()
+            # moving is taken care of in GameLocations
+            # continue to count this as a full turn, so hazards and warnings
+            # are checked before player move/shoot
+
+            # IMPORTANT!!!!
+            # got rid of continues because wumpus behind the scene movement
+            # must still happen
+        if hazards == "P":
+            # moving to cavern 0 is done in GameLocations
+            if FallIntoPit():
+                gameOn = False
+                break
+                # TODO probably only one of the above lines is necessary
+        if hazards == "WB":
+            wumpus.setTurnsToMove(1)
+            wumpus.changeToAwake()
+            IO.getInput("you glimpse the wumpus before...")
+            GetMovedByBat()
+        if hazards == "WP":
+            wumpus.setTurnsToMove(1)
+            wumpus.changeToAwake()
+            IO.getInput("you glimpse the wumpus before...")
+            if FallIntoPit():
+                gameOn = False
+                break
+                # TODO probably only one of the above lines is necessary
+
+
+
+        print(location.getWarnings())
+        #IO.write("Player position:" + str(player.pos))
+        #IO.write("Nearby rooms: " + str(cave.getConnections(player.pos)))  consolidating this message with the thing that always shows connected rooms
+        warnings = location.getWarnings()
+        if "PIT" in warnings:
+            IO.write("You feel a draft")
+            sound.playSound("pit")
+        if "BAT" in warnings:
+            IO.write("You hear large wings flapping")
+            sound.playSound("bat1")
+        if "WUMPUS" in warnings:
+            IO.write("You smell a wumpus")
+            sound.playSound(random.choice(("wumpus1", "wumpus2")))
+        
+        # player chooses which action to take
+        turnType = IO.getInput("move OR shoot OR buy arrow OR buy secret", location.getWarnings())
+
+        if turnType == "shoot":  
+            ShootArrow()
+            if wumpus.wumpState == "DEAD":
+                gameOn = False
+        elif turnType == "move":  
+            Move()
+        elif turnType == "buy arrow":
+            BuyArrow()
+        elif turnType == "buy secret":
+            BuySecret()
+
+        wumpus.endTurnMove(cave, turnNum)
+        warnings = location.getWarnings()
+        IO.drawFrame()
+        turnNum += 1
+
+    IO.getInput()
+
+    # TODO tell player their score, note both displays might already be in use so maybe wait
+    # before doing this
+
+    print("game over")
+
+    score = player.computeEndScore(wumpus.getWumpState(), turnNum)
+    print("your score is " + str(score))
+    highScores.addHighScore("player1", score)
+    highScoresList = highScores.getHighScores()
+    highScores.addHighScore(playerName, score)
+    highScores.writeHighScores()
+
+    #NEED TO SEND THIS TO PYGAME WINDOW
+    print(highScoresList)
+
+
+
+
 
 # keep window running until player closes it
 while True:
