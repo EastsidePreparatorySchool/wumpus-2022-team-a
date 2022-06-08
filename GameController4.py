@@ -151,7 +151,7 @@ def BuySecret():
         IO.write("Here is your secret: ", trivia.getSecret())
         IO.getInput()
         # clear secret from display
-        IO.write("")
+        IO.write(" ")
     else:
         IO.write("Failed to get a secret.")
 
@@ -183,7 +183,7 @@ def GetMovedByBat():
     IO.write("The bat drops you in room " + str(player.pos) + ".")
     IO.getInput()
     # clear display text
-    IO.write("")
+    IO.write(" ")
     player.pos = random.randint(0, 29)
 
 # returns true if you died, false if survived
