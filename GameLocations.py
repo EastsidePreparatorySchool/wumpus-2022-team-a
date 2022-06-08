@@ -121,9 +121,8 @@ class GameLocations:
         
         player.useArrow()
 
-        wumpus.arrowMiss()
+        wumpus.setTurnsToMove(wumpus.arrowMiss())
         wumpus.changeToAwake()
-        wumpus.moveWumpus(cave)
         return False
 
     # Called by GameControl

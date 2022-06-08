@@ -160,9 +160,10 @@ def FightWumpus():
     sound.playSound("wumpus3")
     if trivia.challenge(3, 5):
         IO.write("you escape the wumpus and move to a random connected room")
-        player.pos = random.choice(cave.getConnections(player.pos))
+        wumpus.setTurnsToMove(wumpus.trivia())
         wumpus.changeToAwake()
-        wumpus.moveWumpus(cave)
+        player.pos = random.choice(cave.getConnections(player.pos))
+        
     else:
         IO.write("", "the wumpus eats you")
         sound.playSound("plHit")
@@ -254,7 +255,7 @@ else:
 IO.getInput("You find yourself in a deep, dark cavern. Press Enter to continue...")
 
 
-turnNum = True # why is this a boolean instead of a number?
+turnNum = 0 
 gameOn = True
 # Our game loop
 while gameOn:
@@ -275,7 +276,10 @@ while gameOn:
         # moving is taken care of in GameLocations
         # continue to count this as a full turn, so hazards and warnings
         # are checked before player move/shoot
-        continue
+
+        # IMPORTANT!!!!
+        # got rid of continues because wumpus behind the scene movement
+        # must still happen
     if hazards == "P":
         # moving to cavern 0 is done in GameLocations
         if FallIntoPit():
@@ -283,20 +287,20 @@ while gameOn:
             break
             # TODO probably only one of the above lines is necessary
     if hazards == "WB":
+        wumpus.setTurnsToMove(1)
         wumpus.changeToAwake()
-        wumpus.moveWumpus(cave)
         IO.getInput("you glimpse the wumpus before...")
         GetMovedByBat()
-        continue
     if hazards == "WP":
+        wumpus.setTurnsToMove(1)
+        wumpus.changeToAwake()
         IO.getInput("you glimpse the wumpus before...")
         if FallIntoPit():
             gameOn = False
             break
             # TODO probably only one of the above lines is necessary
-        wumpus.changeToAwake()
-        wumpus.moveWumpus(cave)
-    
+
+
 
     # this should probably be moved to after hazards are checked
     print(location.getWarnings())
@@ -326,6 +330,7 @@ while gameOn:
     elif turnType == "buy secret":
         BuySecret()
 
+    wumpus.endTurnMove(cave, turnNum)
     warnings = location.getWarnings()
     IO.drawFrame()
     turnNum += 1

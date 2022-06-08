@@ -18,6 +18,7 @@ class LazyWumpus:
         self.turnsMoved = 0
         self.turnsToMove = 0
         self.turnsSinceLastMove = 0
+        self.maximumRoomsMove = 1
 
     # accessor method for wumpPos for other objects
     def getWumpPos(self):
@@ -56,7 +57,7 @@ class LazyWumpus:
     # method to move wumpus
     def moveWumpus(self, cave):
         possiblePos = cave.getConnections(self.getWumpPos())
-        self.wumpPos = possiblePos[random.randint(0, 5)]
+        self.wumpPos = possiblePos[random.randint(0, len(possiblePos) - 1)]
 
     # method controlling behind the scenes wumpus movement
     def endTurnMove(self, cave, turnNum):

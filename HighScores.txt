@@ -2,4 +2,4 @@ joe - 94
 bob - 97
 bob2 - 99
 move - 89
-player1 - 97
+based - 16
